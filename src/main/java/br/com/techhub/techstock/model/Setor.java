@@ -19,7 +19,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = {
     "id"
 }, callSuper = true)
-public class Setor extends AuditModel {
+public class Setor extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

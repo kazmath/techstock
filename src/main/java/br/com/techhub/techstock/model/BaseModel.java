@@ -26,7 +26,7 @@ import lombok.Setter;
 @JsonIgnoreProperties(value = {
     "createdAt", "updatedAt"
 }, allowGetters = true)
-public class AuditModel implements Serializable {
+public class BaseModel implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_create", nullable = false, updatable = false)

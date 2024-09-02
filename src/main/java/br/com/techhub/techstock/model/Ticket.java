@@ -27,7 +27,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = {
     "id"
 }, callSuper = true)
-public class Ticket extends AuditModel {
+public class Ticket extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -29,7 +29,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = {
     "id"
 }, callSuper = true)
-public class Equipamento extends AuditModel {
+public class Equipamento extends BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
