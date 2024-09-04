@@ -1,0 +1,47 @@
+spring:
+    profiles:
+        active: dev
+    application:
+        name: techstock
+    datasource:
+        url: jdbc:h2:mem:mydb
+        username: sa
+        password:
+        driverClassName: org.h2.Driver
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+    # datasource:
+    #     driver-class-name: org.postgresql.Driver
+    #     url: "jdbc:postgresql://localhost:5432/techstock"
+    #     username: postgres
+    # jpa:
+    #     properties:
+    #         hibernate:
+    #             dialect: org.hibernate.dialect.PostgreSQLDialect
+    #     hibernate:
+    #         ddl-auto: create
+    #     show-sql: true
+server:
+    port: "8090"
+logging:
+    level:
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql:
+                            BasicBinder: TRACE
+#OpenAPI Properties
+springdoc:
+    api-docs:
+        path: /api-docs
+    swagger-ui:
+        path: /swagger-ui.html
+        enabled: true
+    # email: example@example.org
+
+# # JWT
+# jwt:
+#     secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+#     expiration: 604800 # token com duração de 7 dias
