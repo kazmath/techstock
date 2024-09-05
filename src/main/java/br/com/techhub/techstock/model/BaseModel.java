@@ -3,8 +3,8 @@ package br.com.techhub.techstock.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,12 +30,12 @@ public class BaseModel implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_create", nullable = false, updatable = false)
-    @CreatedDate
+    @CreationTimestamp
     private Date dtCreate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_update", nullable = false)
-    @LastModifiedDate
+    @UpdateTimestamp
     private Date dtUpdate;
 
 }

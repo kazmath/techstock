@@ -2,6 +2,7 @@ package br.com.techhub.techstock.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.SetorRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +37,17 @@ public class Setor extends BaseModel {
      * @param id
      */
     public Setor(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Setor(SetorRequest request) {
+        super();
+        this.id = request.getId();
+        this.nome = request.getNome();
     }
 
 }

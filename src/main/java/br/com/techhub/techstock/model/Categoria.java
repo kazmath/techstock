@@ -2,6 +2,7 @@ package br.com.techhub.techstock.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.CategoriaRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +40,18 @@ public class Categoria extends BaseModel {
      * @param id
      */
     public Categoria(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Categoria(CategoriaRequest request) {
+        super();
+        this.id = request.getId();
+        this.nome = request.getNome();
+        this.descricao = request.getDescricao();
     }
 
 }

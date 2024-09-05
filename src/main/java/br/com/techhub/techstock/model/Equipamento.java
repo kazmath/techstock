@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -75,7 +76,25 @@ public class Equipamento extends BaseModel {
      * @param id
      */
     public Equipamento(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Equipamento(EquipamentoRequest request) {
+        super();
+        this.id = request.getId();
+        this.nome = request.getNome();
+        this.descricao = request.getDescricao();
+        this.fabricante = request.getFabricante();
+        this.modelo = request.getModelo();
+        this.ano_fabricacao = request.getAno_fabricacao();
+        this.status = request.getStatus();
+        this.dt_entrada = request.getDt_entrada();
+        this.dt_saida = request.getDt_saida();
+        this.categoria = request.getCategoria();
     }
 
 }

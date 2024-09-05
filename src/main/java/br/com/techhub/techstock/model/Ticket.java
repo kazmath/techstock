@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.TicketRequest;
 import br.com.techhub.techstock.model.enums.TicketStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,7 +60,20 @@ public class Ticket extends BaseModel {
      * @param id
      */
     public Ticket(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Ticket(TicketRequest request) {
+        super();
+        this.id = getId();
+        this.dt_devolucao = getDt_devolucao();
+        this.status = getStatus();
+        this.usuario = getUsuario();
+        this.equipamento = getEquipamento();
     }
 
 }

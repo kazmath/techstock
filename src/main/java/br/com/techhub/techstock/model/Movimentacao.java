@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.MovimentacaoRequest;
 import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,7 +60,20 @@ public class Movimentacao extends BaseModel {
      * @param id
      */
     public Movimentacao(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Movimentacao(MovimentacaoRequest request) {
+        super();
+        this.id = request.getId();
+        this.tipo = request.getTipo();
+        this.data = request.getData();
+        this.ticket = request.getTicket();
+        this.usuario = request.getUsuario();
     }
 
 }

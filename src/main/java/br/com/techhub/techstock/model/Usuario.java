@@ -2,6 +2,7 @@ package br.com.techhub.techstock.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import br.com.techhub.techstock.controller.requests.UsuarioRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,7 +53,21 @@ public class Usuario extends BaseModel {
      * @param id
      */
     public Usuario(Long id) {
+        super();
         this.id = id;
+    }
+
+    /**
+     * @param request
+     */
+    public Usuario(UsuarioRequest request) {
+        super();
+        this.id = request.getId();
+        this.nome = request.getNome();
+        this.email = request.getEmail();
+        this.senha = request.getSenha();
+        this.admin = request.getAdmin();
+        this.setor = request.getSetor();
     }
 
 }
