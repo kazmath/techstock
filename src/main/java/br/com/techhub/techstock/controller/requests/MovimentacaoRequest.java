@@ -4,6 +4,7 @@ package br.com.techhub.techstock.controller.requests;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
@@ -18,7 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MovimentacaoRequest implements IRequest {
 
-
+    @JsonIgnore
     private Long id;
 
     @NotNull

@@ -3,6 +3,7 @@ package br.com.techhub.techstock.controller.requests;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.Usuario;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TicketRequest implements IRequest {
 
+    @JsonIgnore
     private Long id;
 
     @NotBlank

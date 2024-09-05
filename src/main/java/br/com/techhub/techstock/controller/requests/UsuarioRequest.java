@@ -1,5 +1,7 @@
 package br.com.techhub.techstock.controller.requests;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.techhub.techstock.model.Setor;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UsuarioRequest implements IRequest {
 
+    @JsonIgnore
     private Long id;
 
     @NotBlank
