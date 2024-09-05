@@ -1,5 +1,7 @@
 package br.com.techhub.techstock.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +24,7 @@ import lombok.Setter;
 public class Categoria extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -31,4 +34,12 @@ public class Categoria extends BaseModel {
 
     @Column(length = 300, nullable = true)
     private String descricao;
+
+    /**
+     * @param id
+     */
+    public Categoria(Long id) {
+        this.id = id;
+    }
+
 }

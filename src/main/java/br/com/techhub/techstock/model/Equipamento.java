@@ -2,6 +2,8 @@ package br.com.techhub.techstock.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,7 @@ import lombok.Setter;
 public class Equipamento extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -67,5 +70,12 @@ public class Equipamento extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
+
+    /**
+     * @param id
+     */
+    public Equipamento(Long id) {
+        this.id = id;
+    }
 
 }

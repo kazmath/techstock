@@ -1,4 +1,4 @@
-package br.com.techhub.techstock.controller;
+package br.com.techhub.techstock.controller.espelhos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Response<T> {
 
-    private T data;
+    private T            data;
     private List<String> errors = new ArrayList<String>();
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.techhub.techstock.controller.espelhos.IEspelho;
+import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.IRequest;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ import jakarta.validation.Valid;
 public interface IController<E extends IEspelho, R extends IRequest> {
 
     // @PostMapping
-    public ResponseEntity<Response<E>> create(@Valid @RequestBody
+    public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
     R entity, BindingResult result);
 
     // @GetMapping("/{id}")

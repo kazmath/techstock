@@ -1,5 +1,7 @@
 package br.com.techhub.techstock.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,6 +27,7 @@ import lombok.Setter;
 public class Usuario extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -44,5 +47,12 @@ public class Usuario extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "setor_id", nullable = false)
     private Setor setor;
+
+    /**
+     * @param id
+     */
+    public Usuario(Long id) {
+        this.id = id;
+    }
 
 }

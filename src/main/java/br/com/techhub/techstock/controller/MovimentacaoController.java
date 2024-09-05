@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.MovimentacaoEspelho;
+import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.MovimentacaoRequest;
 import br.com.techhub.techstock.service.MovimentacaoService;
@@ -27,7 +28,7 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
     private MovimentacaoService movimentacaoService;
 
     @PostMapping
-    public ResponseEntity<Response<MovimentacaoEspelho>> create(@Valid
+    public ResponseEntity<Response<Boolean>> create(@Valid
     MovimentacaoRequest entity, BindingResult result) { // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'create'"

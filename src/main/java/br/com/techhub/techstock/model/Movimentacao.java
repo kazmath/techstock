@@ -2,6 +2,8 @@ package br.com.techhub.techstock.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +34,7 @@ import lombok.Setter;
 public class Movimentacao extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -51,5 +54,12 @@ public class Movimentacao extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
+
+    /**
+     * @param id
+     */
+    public Movimentacao(Long id) {
+        this.id = id;
+    }
 
 }

@@ -1,5 +1,7 @@
 package br.com.techhub.techstock.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,11 +24,19 @@ import lombok.Setter;
 public class Setor extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(length = 100, nullable = false)
     private String nome;
+
+    /**
+     * @param id
+     */
+    public Setor(Long id) {
+        this.id = id;
+    }
 
 }

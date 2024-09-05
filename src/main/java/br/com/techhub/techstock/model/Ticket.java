@@ -2,6 +2,8 @@ package br.com.techhub.techstock.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import br.com.techhub.techstock.model.enums.TicketStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +16,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +34,12 @@ import lombok.Setter;
 public class Ticket extends BaseModel {
 
     @Id
+    @JsonValue
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date dt_devolucao;
 
@@ -48,5 +54,12 @@ public class Ticket extends BaseModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_equipamento", nullable = false)
     private Equipamento equipamento;
+
+    /**
+     * @param id
+     */
+    public Ticket(Long id) {
+        this.id = id;
+    }
 
 }
