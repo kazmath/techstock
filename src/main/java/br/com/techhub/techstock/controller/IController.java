@@ -27,7 +27,8 @@ public interface IController<E extends IEspelho, R extends IRequest> {
     Long id);
 
     // @GetMapping
-    public ResponseEntity<Response<List<E>>> readAll(IFilter filterObj);
+    public ResponseEntity<Response<List<E>>> readAll(@Valid
+    IFilter filterObj);
 
     // @PutMapping("/{id}")
     public ResponseEntity<Response<Boolean>> update(@PathVariable
