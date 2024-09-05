@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/setor")
-public class SetorController implements IController<SetorEspelho, SetorRequest> {
+public class SetorController implements IController<SetorEspelho, SetorRequest, IFilter> {
 
     @Autowired
     private SetorService setorService;
@@ -43,10 +43,7 @@ public class SetorController implements IController<SetorEspelho, SetorRequest> 
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<SetorEspelho>>> readAll(
-        @Valid
-        IFilter filterObj
-    ) {
+    public ResponseEntity<Response<List<SetorEspelho>>> readAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'readAll'"
@@ -54,13 +51,9 @@ public class SetorController implements IController<SetorEspelho, SetorRequest> 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(
-        @PathVariable
-        Long id,
-            @RequestBody
-        SetorRequest request,
-        BindingResult result
-    ) {
+    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    Long id, @Valid @RequestBody
+    SetorRequest request, BindingResult result) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'update'"

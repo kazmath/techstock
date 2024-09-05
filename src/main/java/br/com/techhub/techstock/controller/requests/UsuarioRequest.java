@@ -1,6 +1,7 @@
 package br.com.techhub.techstock.controller.requests;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.techhub.techstock.model.Setor;
 import jakarta.validation.constraints.Email;
@@ -30,6 +31,7 @@ public class UsuarioRequest implements IRequest {
     private Boolean admin;
 
     @NotBlank
+    @JsonProperty("setorId")
     private Setor setor;
 
 

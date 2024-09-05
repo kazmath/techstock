@@ -2,6 +2,7 @@ package br.com.techhub.techstock.controller.requests;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,6 +49,7 @@ public class EquipamentoRequest implements IRequest {
     private Date dt_saida;
 
     @NotBlank
+    @JsonAlias("categoriaId")
     private Categoria categoria;
 
 }

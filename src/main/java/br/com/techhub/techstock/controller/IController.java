@@ -2,10 +2,12 @@ package br.com.techhub.techstock.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.techhub.techstock.controller.espelhos.IEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
@@ -16,7 +18,8 @@ import jakarta.validation.Valid;
 
 // @RestController
 // @RequestMapping("/api/table_name")
-public interface IController<E extends IEspelho, R extends IRequest> {
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+public interface IController<E extends IEspelho, R extends IRequest, F extends IFilter> {
 
     // @PostMapping
     public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
@@ -27,12 +30,11 @@ public interface IController<E extends IEspelho, R extends IRequest> {
     Long id);
 
     // @GetMapping
-    public ResponseEntity<Response<List<E>>> readAll(@Valid
-    IFilter filterObj);
+    public ResponseEntity<Response<List<E>>> readAll();
 
     // @PutMapping("/{id}")
     public ResponseEntity<Response<Boolean>> update(@PathVariable
-    Long id, @RequestBody
+    Long id, @Valid @RequestBody
     R request, BindingResult result);
 
     // @DeleteMapping("/{id}")

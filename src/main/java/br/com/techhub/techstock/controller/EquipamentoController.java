@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/equipamento")
-public class EquipamentoController implements IController<EquipamentoEspelho, EquipamentoRequest> {
+public class EquipamentoController implements IController<EquipamentoEspelho, EquipamentoRequest, IFilter> {
 
     @Autowired
     private EquipamentoService equipamentoService;
@@ -44,10 +44,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll(
-        @Valid
-        IFilter filterObj
-    ) {
+    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'readAll'"
@@ -55,13 +52,9 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(
-        @PathVariable
-        Long id,
-            @RequestBody
-        EquipamentoRequest request,
-        BindingResult result
-    ) {
+    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    Long id, @Valid @RequestBody
+    EquipamentoRequest request, BindingResult result) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'update'"

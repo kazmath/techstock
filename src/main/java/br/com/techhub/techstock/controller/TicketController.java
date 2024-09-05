@@ -23,7 +23,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/ticket")
-public class TicketController implements IController<TicketEspelho, TicketRequest> {
+public class TicketController implements IController<TicketEspelho, TicketRequest, IFilter> {
 
     @Autowired
     private TicketService ticketService;
@@ -43,10 +43,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<TicketEspelho>>> readAll(
-        @Valid
-        IFilter filterObj
-    ) {
+    public ResponseEntity<Response<List<TicketEspelho>>> readAll() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'readAll'"
@@ -54,13 +51,9 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(
-        @PathVariable
-        Long id,
-            @RequestBody
-        TicketRequest request,
-        BindingResult result
-    ) {
+    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    Long id, @Valid @RequestBody
+    TicketRequest request, BindingResult result) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException(
             "Unimplemented method 'update'"

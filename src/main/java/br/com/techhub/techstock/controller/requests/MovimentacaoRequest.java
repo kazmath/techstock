@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
@@ -30,9 +31,11 @@ public class MovimentacaoRequest implements IRequest {
     private Date data;
 
     @NotNull
+    @JsonProperty("ticketId")
     private Ticket ticket;
 
     @NotNull
+    @JsonProperty("usuarioId")
     private Usuario usuario;
 
 }

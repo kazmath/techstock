@@ -1,8 +1,10 @@
 package br.com.techhub.techstock.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,60 +20,105 @@ import br.com.techhub.techstock.controller.espelhos.CategoriaEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.CategoriaRequest;
+import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.service.CategoriaService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/categoria")
-public class CategoriaController implements IController<CategoriaEspelho, CategoriaRequest> {
+public class CategoriaController implements IController<CategoriaEspelho, CategoriaRequest, IFilter> {
 
     @Autowired
     private CategoriaService categoriaService;
 
     @PostMapping
     public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
-    CategoriaRequest entity, BindingResult result) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'create'"
-        );
+    CategoriaRequest entity, BindingResult result) {
+        Response<Boolean> response = new Response<>();
+
+        var obj = categoriaService.save(new Categoria(entity));
+        response.setData(obj.getId() != null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response<CategoriaEspelho>> read(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
+    Long id) {
+        Response<CategoriaEspelho> response = new Response<CategoriaEspelho>();
+
+        var obj = categoriaService.findById(id);
+        if (!obj.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Categoria com o id %s não foi encontrada",
+                        id
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        response.setData(new CategoriaEspelho(obj.get()));
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll(
-        @Valid
-        IFilter filterObj
-    ) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'readAll'"
-        );
+    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll() {
+        Response<List<CategoriaEspelho>> response = new Response<List<CategoriaEspelho>>();
+
+        var list = categoriaService.findAll();
+        List<CategoriaEspelho> listEspelho = new ArrayList<CategoriaEspelho>();
+        for (Categoria categoria : list) {
+            listEspelho.add(new CategoriaEspelho(categoria));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(
-        @PathVariable
-        Long id,
-            @RequestBody
-        CategoriaRequest request,
-        BindingResult result
-    ) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'update'"
-        );
+    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    Long id, @Valid @RequestBody
+    CategoriaRequest request, BindingResult result) {
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!categoriaService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Categoria com o id %s não foi encontrada",
+                        id
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        request.setId(id);
+        categoriaService.save(new Categoria(request));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Boolean>> delete(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'delete'"
-        );
+    Long id) {
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!categoriaService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Categoria com o id %s não foi encontrada",
+                        id
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        categoriaService.delete(new Categoria(id));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }
