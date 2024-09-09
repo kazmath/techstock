@@ -1,8 +1,10 @@
 package br.com.techhub.techstock.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,7 @@ import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
+import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.service.TicketService;
 import jakarta.validation.Valid;
 
@@ -30,41 +33,83 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
     @PostMapping
     public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
-    TicketRequest entity, BindingResult result) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'create'"
-        );
+    TicketRequest entity, BindingResult result) {
+        Response<Boolean> response = new Response<>();
+
+        var obj = ticketService.save(new Ticket(entity));
+        response.setData(obj.getId() != null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response<TicketEspelho>> read(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
+    Long id) {
+        Response<TicketEspelho> response = new Response<TicketEspelho>();
+
+        var obj = ticketService.findById(id);
+        if (!obj.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Ticket com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        response.setData(new TicketEspelho(obj.get()));
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @GetMapping
     public ResponseEntity<Response<List<TicketEspelho>>> readAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'readAll'"
-        );
+        Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
+
+        var list = ticketService.findAll();
+        List<TicketEspelho> listEspelho = new ArrayList<TicketEspelho>();
+        for (Ticket ticket : list) {
+            listEspelho.add(new TicketEspelho(ticket));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Response<Boolean>> update(@PathVariable
     Long id, @Valid @RequestBody
     TicketRequest request, BindingResult result) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'update'"
-        );
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!ticketService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Ticket com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        request.setId(id);
+        ticketService.save(new Ticket(request));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Boolean>> delete(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'delete'"
-        );
+    Long id) {
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!ticketService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Ticket com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        ticketService.delete(new Ticket(id));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }

@@ -9,10 +9,19 @@ import lombok.Setter;
 public class UsuarioEspelho implements IEspelho {
 
     private Long id;
-    // TODO: Add as outras colunas
+    private String  nome;
+    private String  email;
+    private String  senha;
+    private Boolean admin;
+    private Long    setorId;
 
     public UsuarioEspelho(Usuario usuario) {
-        throw new UnsupportedOperationException();
+        this.id = usuario.getId();
+        this.nome = usuario.getNome();
+        this.email = usuario.getEmail();
+        this.senha = usuario.getSenha();
+        this.admin = usuario.getAdmin();
+        this.setorId = usuario.getSetor().getId();
     }
 
 }

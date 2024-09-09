@@ -9,10 +9,11 @@ import lombok.Setter;
 public class SetorEspelho implements IEspelho {
 
     private Long id;
-    // TODO: Add as outras colunas
+    private String nome;
 
     public SetorEspelho(Setor setor) {
-        throw new UnsupportedOperationException();
+        this.id = setor.getId();
+        this.nome = setor.getNome();
     }
 
 }

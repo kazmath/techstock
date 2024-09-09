@@ -1,8 +1,10 @@
 package br.com.techhub.techstock.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +20,7 @@ import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.UsuarioEspelho;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.UsuarioRequest;
+import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.service.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -30,41 +33,83 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
 
     @PostMapping
     public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
-    UsuarioRequest entity, BindingResult result) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'create'"
-        );
+    UsuarioRequest entity, BindingResult result) {
+        Response<Boolean> response = new Response<>();
+
+        var obj = usuarioService.save(new Usuario(entity));
+        response.setData(obj.getId() != null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response<UsuarioEspelho>> read(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'read'");
+    Long id) {
+        Response<UsuarioEspelho> response = new Response<UsuarioEspelho>();
+
+        var obj = usuarioService.findById(id);
+        if (!obj.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Usuario com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        response.setData(new UsuarioEspelho(obj.get()));
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @GetMapping
     public ResponseEntity<Response<List<UsuarioEspelho>>> readAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'readAll'"
-        );
+        Response<List<UsuarioEspelho>> response = new Response<List<UsuarioEspelho>>();
+
+        var list = usuarioService.findAll();
+        List<UsuarioEspelho> listEspelho = new ArrayList<UsuarioEspelho>();
+        for (Usuario usuario : list) {
+            listEspelho.add(new UsuarioEspelho(usuario));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Response<Boolean>> update(@PathVariable
     Long id, @Valid @RequestBody
     UsuarioRequest request, BindingResult result) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'update'"
-        );
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!usuarioService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Usuario com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        request.setId(id);
+        usuarioService.save(new Usuario(request));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Response<Boolean>> delete(@PathVariable
-    Long id) { // TODO Auto-generated method stub
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'delete'"
-        );
+    Long id) {
+        Response<Boolean> response = new Response<Boolean>();
+        response.setData(false);
+
+        if (!usuarioService.findById(id).isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Usuario com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        usuarioService.delete(new Usuario(id));
+        response.setData(true);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 }

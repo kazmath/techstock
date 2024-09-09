@@ -8,11 +8,14 @@ import lombok.Setter;
 @Setter
 public class CategoriaEspelho implements IEspelho {
 
-    private Long id;
-    // TODO: Add as outras colunas
+    private Long   id;
+    private String nome;
+    private String descricao;
 
     public CategoriaEspelho(Categoria categoria) {
-        throw new UnsupportedOperationException();
+        this.id = categoria.getId();
+        this.nome = categoria.getNome();
+        this.descricao = categoria.getDescricao();
     }
 
 }
