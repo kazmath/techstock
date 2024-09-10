@@ -22,7 +22,7 @@ import jakarta.validation.Valid;
 public interface IController<E extends IEspelho, R extends IRequest, F extends IFilter> {
 
     // @PostMapping
-    public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
+    public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     R entity, BindingResult result);
 
     // @GetMapping("/{id}")
@@ -33,7 +33,7 @@ public interface IController<E extends IEspelho, R extends IRequest, F extends I
     public ResponseEntity<Response<List<E>>> readAll();
 
     // @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     R request, BindingResult result);
 

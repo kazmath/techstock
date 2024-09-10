@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,22 +34,22 @@ public class EquipamentoRequest implements IRequest {
     @NotBlank
     private String modelo;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern = "yyyy")
     private Date ano_fabricacao;
 
     @NotBlank
     private EquipamentoStatus status;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_entrada;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_saida;
 
-    @NotBlank
+    @NotNull
     @JsonAlias("categoriaId")
     private Categoria categoria;
 

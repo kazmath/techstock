@@ -32,12 +32,12 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     private TicketService ticketService;
 
     @PostMapping
-    public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
+    public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     TicketRequest entity, BindingResult result) {
-        Response<Boolean> response = new Response<>();
+        Response<Long> response = new Response<>();
 
         var obj = ticketService.save(new Ticket(entity));
-        response.setData(obj.getId() != null);
+        response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -73,12 +73,10 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     TicketRequest request, BindingResult result) {
-        Response<Boolean> response = new Response<Boolean>();
-        response.setData(false);
-
+        Response<Long> response = new Response<>();
         if (!ticketService.findById(id).isPresent()) {
             response.getErrors()
                 .add(
@@ -89,7 +87,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
         request.setId(id);
         ticketService.save(new Ticket(request));
-        response.setData(true);
+        response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

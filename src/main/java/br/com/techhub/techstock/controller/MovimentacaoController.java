@@ -33,12 +33,12 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
     private MovimentacaoService movimentacaoService;
 
     @PostMapping
-    public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
+    public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     MovimentacaoRequest entity, BindingResult result) {
-        Response<Boolean> response = new Response<>();
+        Response<Long> response = new Response<>();
 
         var obj = movimentacaoService.save(new Movimentacao(entity));
-        response.setData(obj.getId() != null);
+        response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -77,12 +77,10 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     MovimentacaoRequest request, BindingResult result) {
-        Response<Boolean> response = new Response<Boolean>();
-        response.setData(false);
-
+        Response<Long> response = new Response<>();
         if (!movimentacaoService.findById(id).isPresent()) {
             response.getErrors()
                 .add(
@@ -96,7 +94,7 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
 
         request.setId(id);
         movimentacaoService.save(new Movimentacao(request));
-        response.setData(true);
+        response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

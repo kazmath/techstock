@@ -32,12 +32,12 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Response<Boolean>> create(@Valid @RequestBody
+    public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     UsuarioRequest entity, BindingResult result) {
-        Response<Boolean> response = new Response<>();
+        Response<Long> response = new Response<>();
 
         var obj = usuarioService.save(new Usuario(entity));
-        response.setData(obj.getId() != null);
+        response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -73,12 +73,10 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<Boolean>> update(@PathVariable
+    public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     UsuarioRequest request, BindingResult result) {
-        Response<Boolean> response = new Response<Boolean>();
-        response.setData(false);
-
+        Response<Long> response = new Response<>();
         if (!usuarioService.findById(id).isPresent()) {
             response.getErrors()
                 .add(
@@ -89,7 +87,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
 
         request.setId(id);
         usuarioService.save(new Usuario(request));
-        response.setData(true);
+        response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
