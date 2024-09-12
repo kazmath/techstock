@@ -1,0 +1,3 @@
+[submodule "view/TechStock"]
+	path = view/TechStock
+	url = https://github.com/DanielFigueiroa/TechStock
