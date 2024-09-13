@@ -1,0 +1,14 @@
+{
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Spring Boot-TechStockApplication<techstock>",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "br.com.techhub.techstock.TechstockApplication",
+			"projectName": "techstock",
+			"args": "",
+			"envFile": "${workspaceFolder}/.env",
+		}
+	]
+}
