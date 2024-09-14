@@ -64,6 +64,7 @@ public class LoadDatabase {
             equipamento.setModelo("Gol");
             equipamento.setNome("Caixa de som");
             equipamento.setStatus(EquipamentoStatus.EM_MANUTENCAO);
+            equipamentoService.save(equipamento);
 
             categoria = new Categoria();
             categoria.setNome("Slideshow");
@@ -80,6 +81,7 @@ public class LoadDatabase {
             equipamento.setModelo("Fiat Uno");
             equipamento.setNome("SlideShow");
             equipamento.setStatus(EquipamentoStatus.DISPONIVEL);
+            equipamentoService.save(equipamento);
 
             equipamento = new Equipamento();
             equipamento.setAno_fabricacao(new Date());
@@ -93,9 +95,11 @@ public class LoadDatabase {
             equipamento.setModelo("Ford ka");
             equipamento.setNome("Cadeira");
             equipamento.setStatus(EquipamentoStatus.INDISPONIVEL);
+            equipamentoService.save(equipamento);
 
             var setor = new Setor();
             setor.setNome("TI");
+            setorService.save(setor);
 
             var usuario = new Usuario();
             usuario.setAdmin(false);
@@ -103,6 +107,7 @@ public class LoadDatabase {
             usuario.setNome("Daniel");
             usuario.setSenha("123456");
             usuario.setSetor(setor);
+            usuarioService.save(usuario);
 
             var ticket = new Ticket();
             ticket.setDt_devolucao(
@@ -111,6 +116,7 @@ public class LoadDatabase {
             ticket.setEquipamento(equipamento);
             ticket.setStatus(TicketStatus.PROCESSANDO);
             ticket.setUsuario(usuario);
+            ticketService.save(ticket);
 
 
             var movimentacao = new Movimentacao();
@@ -118,6 +124,7 @@ public class LoadDatabase {
             movimentacao.setTicket(ticket);
             movimentacao.setTipo(MovimentacaoTipo.SAIDA);
             movimentacao.setUsuario(usuario);
+            movimentacaoService.save(movimentacao);
 
 
         };
