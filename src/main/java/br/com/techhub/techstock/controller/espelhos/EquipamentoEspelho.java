@@ -2,6 +2,8 @@ package br.com.techhub.techstock.controller.espelhos;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import lombok.Getter;
@@ -16,11 +18,19 @@ public class EquipamentoEspelho implements IEspelho {
     private String            descricao;
     private String            fabricante;
     private String            modelo;
+
+    @JsonFormat(pattern = "yyyy")
     private Date              anoFabricacao;
+
     private EquipamentoStatus status;
+
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
     private Date              dtEntrada;
+
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
     private Date              dtSaida;
-    private Long              categoriaId;
+
+    private CategoriaEspelho categoria;
 
     public EquipamentoEspelho(Equipamento equipamento) {
         this.id = equipamento.getId();
@@ -32,7 +42,7 @@ public class EquipamentoEspelho implements IEspelho {
         this.status = equipamento.getStatus();
         this.dtEntrada = equipamento.getDt_entrada();
         this.dtSaida = equipamento.getDt_saida();
-        this.categoriaId = equipamento.getCategoria().getId();
+        this.categoria = new CategoriaEspelho(equipamento.getCategoria());
     }
 
 }
