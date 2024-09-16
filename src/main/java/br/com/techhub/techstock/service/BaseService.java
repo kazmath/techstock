@@ -11,7 +11,7 @@ import br.com.techhub.techstock.model.BaseModel;
 public class BaseService<M extends BaseModel, T extends ListCrudRepository<M, Long>> {
 
     @Autowired
-    private T repository;
+    public T repository;
 
     public M save(M entity) {
         return repository.save(entity);

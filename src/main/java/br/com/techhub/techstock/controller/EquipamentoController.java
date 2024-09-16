@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.EquipamentoEspelho;
+import br.com.techhub.techstock.controller.espelhos.EquipamentoStatusEnumEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.model.Equipamento;
+import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.service.EquipamentoService;
 import jakarta.validation.Valid;
 
@@ -121,5 +123,21 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         response.setData(true);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
+    }
+
+    public ResponseEntity<Response<List<EquipamentoStatusEnumEspelho>>> listStatus() {
+        Response<List<EquipamentoStatusEnumEspelho>> response = new Response<List<EquipamentoStatusEnumEspelho>>();
+
+        var list = EquipamentoStatus.values();
+        List<EquipamentoStatusEnumEspelho> listEspelho = new ArrayList<EquipamentoStatusEnumEspelho>();
+
+        for (EquipamentoStatus equipamentoStatus : list) {
+            listEspelho.add(
+                new EquipamentoStatusEnumEspelho(equipamentoStatus)
+            );
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 }
