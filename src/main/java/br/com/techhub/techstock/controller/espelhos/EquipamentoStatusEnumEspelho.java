@@ -10,10 +10,12 @@ public class EquipamentoStatusEnumEspelho implements IEspelho {
 
     private char   codigo;
     private String descricao;
+    private String corHex;
 
     public EquipamentoStatusEnumEspelho(EquipamentoStatus equipamentoStatus) {
         this.codigo = equipamentoStatus.getCodigo();
         this.descricao = equipamentoStatus.getDescricao();
+        this.corHex = equipamentoStatus.getCorHex();
     }
 
 }

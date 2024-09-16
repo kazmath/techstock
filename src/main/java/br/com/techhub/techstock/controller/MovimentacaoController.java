@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.MovimentacaoEspelho;
+import br.com.techhub.techstock.controller.espelhos.MovimentacaoTipoEnumEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.MovimentacaoRequest;
 import br.com.techhub.techstock.model.Movimentacao;
+import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import br.com.techhub.techstock.service.MovimentacaoService;
 import jakarta.validation.Valid;
 
@@ -119,6 +121,21 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
         response.setData(true);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
+    }
+
+    @GetMapping("/tipos")
+    public ResponseEntity<Response<List<MovimentacaoTipoEnumEspelho>>> listStatus() {
+        Response<List<MovimentacaoTipoEnumEspelho>> response = new Response<List<MovimentacaoTipoEnumEspelho>>();
+
+        var list = MovimentacaoTipo.values();
+        List<MovimentacaoTipoEnumEspelho> listEspelho = new ArrayList<MovimentacaoTipoEnumEspelho>();
+
+        for (MovimentacaoTipo movimentacaoTipo : list) {
+            listEspelho.add(new MovimentacaoTipoEnumEspelho(movimentacaoTipo));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
 }

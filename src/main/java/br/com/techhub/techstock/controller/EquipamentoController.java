@@ -79,7 +79,6 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     }
 
     @PutMapping("/{id}")
-
     public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     EquipamentoRequest request, BindingResult result) {
@@ -102,7 +101,6 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     }
 
     @DeleteMapping("/{id}")
-
     public ResponseEntity<Response<Boolean>> delete(@PathVariable
     Long id) {
         Response<Boolean> response = new Response<Boolean>();
@@ -125,6 +123,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
     }
 
+    @GetMapping("/statuses")
     public ResponseEntity<Response<List<EquipamentoStatusEnumEspelho>>> listStatus() {
         Response<List<EquipamentoStatusEnumEspelho>> response = new Response<List<EquipamentoStatusEnumEspelho>>();
 

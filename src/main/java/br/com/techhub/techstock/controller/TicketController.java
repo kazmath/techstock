@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
+import br.com.techhub.techstock.controller.espelhos.TicketStatusEnumEspelho;
 import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
 import br.com.techhub.techstock.model.Ticket;
+import br.com.techhub.techstock.model.enums.TicketStatus;
 import br.com.techhub.techstock.service.TicketService;
 import jakarta.validation.Valid;
 
@@ -110,4 +112,20 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<Response<List<TicketStatusEnumEspelho>>> listStatus() {
+        Response<List<TicketStatusEnumEspelho>> response = new Response<List<TicketStatusEnumEspelho>>();
+
+        var list = TicketStatus.values();
+        List<TicketStatusEnumEspelho> listEspelho = new ArrayList<TicketStatusEnumEspelho>();
+
+        for (TicketStatus ticketStatus : list) {
+            listEspelho.add(new TicketStatusEnumEspelho(ticketStatus));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+    }
+
 }
