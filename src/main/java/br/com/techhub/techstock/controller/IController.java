@@ -21,6 +21,9 @@ import jakarta.validation.Valid;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public interface IController<E extends IEspelho, R extends IRequest, F extends IFilter> {
 
+    // @GetMapping
+    public ResponseEntity<Response<List<E>>> readAll();
+
     // @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     R entity, BindingResult result);
@@ -28,9 +31,6 @@ public interface IController<E extends IEspelho, R extends IRequest, F extends I
     // @GetMapping("/{id}")
     public ResponseEntity<Response<E>> read(@PathVariable
     Long id);
-
-    // @GetMapping
-    public ResponseEntity<Response<List<E>>> readAll();
 
     // @PutMapping("/{id}")
     public ResponseEntity<Response<Long>> update(@PathVariable

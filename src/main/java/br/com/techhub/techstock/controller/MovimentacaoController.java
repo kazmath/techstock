@@ -34,6 +34,20 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
     @Autowired
     private MovimentacaoService movimentacaoService;
 
+    @GetMapping
+    public ResponseEntity<Response<List<MovimentacaoEspelho>>> readAll() {
+        Response<List<MovimentacaoEspelho>> response = new Response<List<MovimentacaoEspelho>>();
+
+        var list = movimentacaoService.findAll();
+        List<MovimentacaoEspelho> listEspelho = new ArrayList<MovimentacaoEspelho>();
+        for (Movimentacao movimentacao : list) {
+            listEspelho.add(new MovimentacaoEspelho(movimentacao));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     MovimentacaoRequest entity, BindingResult result) {
@@ -61,21 +75,7 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new MovimentacaoEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<MovimentacaoEspelho>>> readAll() {
-        Response<List<MovimentacaoEspelho>> response = new Response<List<MovimentacaoEspelho>>();
-
-        var list = movimentacaoService.findAll();
-        List<MovimentacaoEspelho> listEspelho = new ArrayList<MovimentacaoEspelho>();
-        for (Movimentacao movimentacao : list) {
-            listEspelho.add(new MovimentacaoEspelho(movimentacao));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")
@@ -135,7 +135,7 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
         }
         response.setData(listEspelho);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

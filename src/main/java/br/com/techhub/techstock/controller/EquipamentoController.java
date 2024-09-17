@@ -33,6 +33,20 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     @Autowired
     private EquipamentoService equipamentoService;
 
+    @GetMapping
+    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll() {
+        Response<List<EquipamentoEspelho>> response = new Response<List<EquipamentoEspelho>>();
+
+        var list = equipamentoService.findAll();
+        List<EquipamentoEspelho> listEspelho = new ArrayList<EquipamentoEspelho>();
+        for (Equipamento equipamento : list) {
+            listEspelho.add(new EquipamentoEspelho(equipamento));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     EquipamentoRequest entity, BindingResult result) {
@@ -44,7 +58,6 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     }
 
     @GetMapping("/{id}")
-
     public ResponseEntity<Response<EquipamentoEspelho>> read(@PathVariable
     Long id) {
         Response<EquipamentoEspelho> response = new Response<EquipamentoEspelho>();
@@ -61,21 +74,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new EquipamentoEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll() {
-        Response<List<EquipamentoEspelho>> response = new Response<List<EquipamentoEspelho>>();
-
-        var list = equipamentoService.findAll();
-        List<EquipamentoEspelho> listEspelho = new ArrayList<EquipamentoEspelho>();
-        for (Equipamento equipamento : list) {
-            listEspelho.add(new EquipamentoEspelho(equipamento));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")
@@ -137,6 +136,6 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         }
         response.setData(listEspelho);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

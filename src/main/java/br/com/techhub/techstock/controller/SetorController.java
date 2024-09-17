@@ -31,6 +31,20 @@ public class SetorController implements IController<SetorEspelho, SetorRequest, 
     @Autowired
     private SetorService setorService;
 
+    @GetMapping
+    public ResponseEntity<Response<List<SetorEspelho>>> readAll() {
+        Response<List<SetorEspelho>> response = new Response<List<SetorEspelho>>();
+
+        var list = setorService.findAll();
+        List<SetorEspelho> listEspelho = new ArrayList<SetorEspelho>();
+        for (Setor setor : list) {
+            listEspelho.add(new SetorEspelho(setor));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     SetorRequest entity, BindingResult result) {
@@ -53,21 +67,7 @@ public class SetorController implements IController<SetorEspelho, SetorRequest, 
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new SetorEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<SetorEspelho>>> readAll() {
-        Response<List<SetorEspelho>> response = new Response<List<SetorEspelho>>();
-
-        var list = setorService.findAll();
-        List<SetorEspelho> listEspelho = new ArrayList<SetorEspelho>();
-        for (Setor setor : list) {
-            listEspelho.add(new SetorEspelho(setor));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")

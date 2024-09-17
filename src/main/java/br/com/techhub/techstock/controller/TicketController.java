@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.Response;
@@ -32,6 +33,29 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
     @Autowired
     private TicketService ticketService;
+
+    @GetMapping
+    public ResponseEntity<Response<List<TicketEspelho>>> readAllFilter(
+        @RequestParam(required = false)
+        Long usuarioId
+    ) {
+        Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
+
+        List<Ticket> list;
+        if (usuarioId == null) {
+            list = ticketService.findAll();
+        } else {
+            list = ticketService.findByUsuario(usuarioId);
+        }
+
+        List<TicketEspelho> listEspelho = new ArrayList<TicketEspelho>();
+        for (Ticket ticket : list) {
+            listEspelho.add(new TicketEspelho(ticket));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
@@ -57,21 +81,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new TicketEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<TicketEspelho>>> readAll() {
-        Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
-
-        var list = ticketService.findAll();
-        List<TicketEspelho> listEspelho = new ArrayList<TicketEspelho>();
-        for (Ticket ticket : list) {
-            listEspelho.add(new TicketEspelho(ticket));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")
@@ -125,7 +135,14 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         }
         response.setData(listEspelho);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Override
+    public ResponseEntity<Response<List<TicketEspelho>>> readAll() {
+        throw new UnsupportedOperationException(
+            "Unimplemented method 'readAll'"
+        );
     }
 
 }

@@ -31,6 +31,20 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping
+    public ResponseEntity<Response<List<UsuarioEspelho>>> readAll() {
+        Response<List<UsuarioEspelho>> response = new Response<List<UsuarioEspelho>>();
+
+        var list = usuarioService.findAll();
+        List<UsuarioEspelho> listEspelho = new ArrayList<UsuarioEspelho>();
+        for (Usuario usuario : list) {
+            listEspelho.add(new UsuarioEspelho(usuario));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     UsuarioRequest entity, BindingResult result) {
@@ -55,21 +69,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new UsuarioEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<UsuarioEspelho>>> readAll() {
-        Response<List<UsuarioEspelho>> response = new Response<List<UsuarioEspelho>>();
-
-        var list = usuarioService.findAll();
-        List<UsuarioEspelho> listEspelho = new ArrayList<UsuarioEspelho>();
-        for (Usuario usuario : list) {
-            listEspelho.add(new UsuarioEspelho(usuario));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")

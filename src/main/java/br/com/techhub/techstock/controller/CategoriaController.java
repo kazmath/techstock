@@ -31,6 +31,20 @@ public class CategoriaController implements IController<CategoriaEspelho, Catego
     @Autowired
     private CategoriaService categoriaService;
 
+    @GetMapping
+    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll() {
+        Response<List<CategoriaEspelho>> response = new Response<List<CategoriaEspelho>>();
+
+        var list = categoriaService.findAll();
+        List<CategoriaEspelho> listEspelho = new ArrayList<CategoriaEspelho>();
+        for (Categoria categoria : list) {
+            listEspelho.add(new CategoriaEspelho(categoria));
+        }
+        response.setData(listEspelho);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     CategoriaRequest entity, BindingResult result) {
@@ -58,21 +72,7 @@ public class CategoriaController implements IController<CategoriaEspelho, Catego
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         response.setData(new CategoriaEspelho(obj.get()));
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll() {
-        Response<List<CategoriaEspelho>> response = new Response<List<CategoriaEspelho>>();
-
-        var list = categoriaService.findAll();
-        List<CategoriaEspelho> listEspelho = new ArrayList<CategoriaEspelho>();
-        for (Categoria categoria : list) {
-            listEspelho.add(new CategoriaEspelho(categoria));
-        }
-        response.setData(listEspelho);
-
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")
