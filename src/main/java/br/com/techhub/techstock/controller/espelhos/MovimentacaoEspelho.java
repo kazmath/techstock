@@ -11,18 +11,18 @@ import lombok.Setter;
 @Setter
 public class MovimentacaoEspelho implements IEspelho {
 
-    private Long id;
+    private Long             id;
     private MovimentacaoTipo tipo;
     private Date             data;
-    private Long             ticketId;
-    private Long             usuarioId;
+    private TicketEspelho    ticketId;
+    private UsuarioEspelho   usuarioId;
 
     public MovimentacaoEspelho(Movimentacao movimentacao) {
         this.id = movimentacao.getId();
         this.tipo = movimentacao.getTipo();
         this.data = movimentacao.getData();
-        this.ticketId = movimentacao.getTicket().getId();
-        this.usuarioId = movimentacao.getUsuario().getId();
+        this.ticketId = new TicketEspelho(movimentacao.getTicket());
+        this.usuarioId = new UsuarioEspelho(movimentacao.getUsuario());
     }
 
 }

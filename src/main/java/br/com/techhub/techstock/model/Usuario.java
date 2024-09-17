@@ -33,6 +33,9 @@ public class Usuario extends BaseModel {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(length = 15, nullable = false)
+    private String codigo;
+
     @Column(length = 100, nullable = false)
     private String nome;
 
@@ -63,6 +66,7 @@ public class Usuario extends BaseModel {
     public Usuario(UsuarioRequest request) {
         super();
         this.id = request.getId();
+        this.codigo = request.getCodigo();
         this.nome = request.getNome();
         this.email = request.getEmail();
         this.senha = request.getSenha();

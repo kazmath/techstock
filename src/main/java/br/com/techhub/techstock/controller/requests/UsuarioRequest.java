@@ -20,6 +20,9 @@ public class UsuarioRequest implements IRequest {
     private Long id;
 
     @NotBlank
+    private String codigo;
+
+    @NotBlank
     private String nome;
 
     @NotBlank

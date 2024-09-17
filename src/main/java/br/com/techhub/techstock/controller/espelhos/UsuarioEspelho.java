@@ -9,6 +9,7 @@ import lombok.Setter;
 public class UsuarioEspelho implements IEspelho {
 
     private Long id;
+    private String  codigo;
     private String  nome;
     private String  email;
     private String  senha;
@@ -17,6 +18,7 @@ public class UsuarioEspelho implements IEspelho {
 
     public UsuarioEspelho(Usuario usuario) {
         this.id = usuario.getId();
+        this.codigo = usuario.getCodigo();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
