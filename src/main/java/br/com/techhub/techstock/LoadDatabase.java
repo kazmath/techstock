@@ -104,6 +104,7 @@ public class LoadDatabase {
             var usuario = new Usuario();
             usuario.setAdmin(false);
             usuario.setEmail("daniel@gmail.com");
+            usuario.setCodigo("202001252356");
             usuario.setNome("Daniel");
             usuario.setSenha("123456");
             usuario.setSetor(setor);
