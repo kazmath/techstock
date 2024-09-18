@@ -119,6 +119,13 @@ public class LoadDatabase {
             ticket.setUsuario(usuario);
             ticketService.save(ticket);
 
+            var movimentacao = new Movimentacao();
+            movimentacao.setData(new Date());
+            movimentacao.setTicket(ticket);
+            movimentacao.setTipo(MovimentacaoTipo.SAIDA);
+            movimentacao.setUsuario(usuario);
+            movimentacaoService.save(movimentacao);
+
             ticket = new Ticket();
             ticket.setDt_devolucao(
                 Date.from(Instant.now().plus(10, ChronoUnit.DAYS))
@@ -131,8 +138,7 @@ public class LoadDatabase {
             ticket.setUsuario(usuario);
             ticketService.save(ticket);
 
-
-            var movimentacao = new Movimentacao();
+            movimentacao = new Movimentacao();
             movimentacao.setData(new Date());
             movimentacao.setTicket(ticket);
             movimentacao.setTipo(MovimentacaoTipo.SAIDA);
