@@ -18,6 +18,9 @@ public class TicketEspelho implements IEspelho {
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
     private Date dt_devolucao;
 
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    private Date dt_abertura;
+
     private TicketStatus       status;
     private UsuarioEspelho     usuario;
     private EquipamentoEspelho equipamento;
@@ -25,6 +28,7 @@ public class TicketEspelho implements IEspelho {
     public TicketEspelho(Ticket ticket) {
         this.id = ticket.getId();
         this.dt_devolucao = ticket.getDt_devolucao();
+        this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();
         this.usuario = new UsuarioEspelho(ticket.getUsuario());
         this.equipamento = new EquipamentoEspelho(ticket.getEquipamento());
@@ -33,6 +37,7 @@ public class TicketEspelho implements IEspelho {
     public TicketEspelho(Ticket ticket, boolean includeUsuario) {
         this.id = ticket.getId();
         this.dt_devolucao = ticket.getDt_devolucao();
+        this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();
         this.equipamento = new EquipamentoEspelho(ticket.getEquipamento());
         if (includeUsuario) {
