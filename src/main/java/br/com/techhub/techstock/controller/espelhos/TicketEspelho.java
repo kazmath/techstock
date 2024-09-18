@@ -18,6 +18,8 @@ public class TicketEspelho implements IEspelho {
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
     private Date dt_devolucao;
 
+    private String observacao;
+
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
     private Date dt_abertura;
 
