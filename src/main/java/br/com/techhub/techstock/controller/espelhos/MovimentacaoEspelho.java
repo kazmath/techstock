@@ -17,7 +17,7 @@ public class MovimentacaoEspelho implements IEspelho {
     private MovimentacaoTipo tipo;
 
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
-    private Date             data;
+    private Date data;
 
     private TicketEspelho  ticket;
     private UsuarioEspelho usuario;
@@ -26,7 +26,7 @@ public class MovimentacaoEspelho implements IEspelho {
         this.id = movimentacao.getId();
         this.tipo = movimentacao.getTipo();
         this.data = movimentacao.getData();
-        this.ticket = new TicketEspelho(movimentacao.getTicket());
+        this.ticket = new TicketEspelho(movimentacao.getTicket(), false);
         this.usuario = new UsuarioEspelho(movimentacao.getUsuario());
     }
 

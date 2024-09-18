@@ -30,4 +30,14 @@ public class TicketEspelho implements IEspelho {
         this.equipamento = new EquipamentoEspelho(ticket.getEquipamento());
     }
 
+    public TicketEspelho(Ticket ticket, boolean includeUsuario) {
+        this.id = ticket.getId();
+        this.dt_devolucao = ticket.getDt_devolucao();
+        this.status = ticket.getStatus();
+        this.equipamento = new EquipamentoEspelho(ticket.getEquipamento());
+        if (includeUsuario) {
+            this.usuario = new UsuarioEspelho(ticket.getUsuario());
+        }
+    }
+
 }
