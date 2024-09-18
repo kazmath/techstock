@@ -119,6 +119,18 @@ public class LoadDatabase {
             ticket.setUsuario(usuario);
             ticketService.save(ticket);
 
+            ticket = new Ticket();
+            ticket.setDt_devolucao(
+                Date.from(Instant.now().plus(10, ChronoUnit.DAYS))
+            );
+            ticket.setEquipamento(equipamento);
+            ticket.setStatus(TicketStatus.APROVADO);
+            ticket.setObservacao(
+                "Dolor tempor consectetur ex aliqua aliqua ea reprehenderit irure pariatur excepteur labore. Ad dolore in laboris in culpa nulla reprehenderit. Sunt pariatur do pariatur ex nostrud. Id occaecat qui commodo enim irure laboris proident reprehenderit magna."
+            );
+            ticket.setUsuario(usuario);
+            ticketService.save(ticket);
+
 
             var movimentacao = new Movimentacao();
             movimentacao.setData(new Date());

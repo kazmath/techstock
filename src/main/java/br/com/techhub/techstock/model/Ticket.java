@@ -41,10 +41,10 @@ public class Ticket extends BaseModel {
     private Long id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column
+    @Column(nullable = false)
     private Date dt_devolucao;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = true, length = 255)
     private String observacao;
 
     @Enumerated(EnumType.STRING)
