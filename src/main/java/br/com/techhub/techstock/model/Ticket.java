@@ -74,6 +74,7 @@ public class Ticket extends BaseModel {
         super();
         this.id = getId();
         this.dt_devolucao = getDt_devolucao();
+        this.observacao = getObservacao();
         this.status = getStatus();
         this.usuario = getUsuario();
         this.equipamento = getEquipamento();
