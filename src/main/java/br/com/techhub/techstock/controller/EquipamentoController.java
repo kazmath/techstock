@@ -34,7 +34,9 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     private EquipamentoService equipamentoService;
 
     @GetMapping
-    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll() {
+    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll(
+        IFilter filtro
+    ) {
         Response<List<EquipamentoEspelho>> response = new Response<List<EquipamentoEspelho>>();
 
         var list = equipamentoService.findAll();

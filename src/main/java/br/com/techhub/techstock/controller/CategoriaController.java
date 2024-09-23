@@ -32,7 +32,9 @@ public class CategoriaController implements IController<CategoriaEspelho, Catego
     private CategoriaService categoriaService;
 
     @GetMapping
-    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll() {
+    public ResponseEntity<Response<List<CategoriaEspelho>>> readAll(
+        IFilter filtro
+    ) {
         Response<List<CategoriaEspelho>> response = new Response<List<CategoriaEspelho>>();
 
         var list = categoriaService.findAll();

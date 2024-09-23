@@ -22,7 +22,8 @@ import jakarta.validation.Valid;
 public interface IController<E extends IEspelho, R extends IRequest, F extends IFilter> {
 
     // @GetMapping
-    public ResponseEntity<Response<List<E>>> readAll();
+    public ResponseEntity<Response<List<E>>> readAll(@Valid
+    F filtro);
 
     // @PostMapping
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody

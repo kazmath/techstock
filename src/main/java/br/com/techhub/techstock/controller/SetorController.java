@@ -32,7 +32,9 @@ public class SetorController implements IController<SetorEspelho, SetorRequest, 
     private SetorService setorService;
 
     @GetMapping
-    public ResponseEntity<Response<List<SetorEspelho>>> readAll() {
+    public ResponseEntity<Response<List<SetorEspelho>>> readAll(
+        IFilter filtro
+    ) {
         Response<List<SetorEspelho>> response = new Response<List<SetorEspelho>>();
 
         var list = setorService.findAll();

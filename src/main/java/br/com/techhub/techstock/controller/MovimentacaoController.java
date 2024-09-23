@@ -19,26 +19,44 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.techhub.techstock.controller.espelhos.MovimentacaoEspelho;
 import br.com.techhub.techstock.controller.espelhos.MovimentacaoTipoEnumEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
-import br.com.techhub.techstock.controller.filters.IFilter;
+import br.com.techhub.techstock.controller.filters.MovimentacaoFiltro;
 import br.com.techhub.techstock.controller.requests.MovimentacaoRequest;
 import br.com.techhub.techstock.model.Movimentacao;
 import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import br.com.techhub.techstock.service.MovimentacaoService;
+import br.com.techhub.techstock.service.UsuarioService;
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/movimentacao")
-public class MovimentacaoController implements IController<MovimentacaoEspelho, MovimentacaoRequest, IFilter> {
+public class MovimentacaoController implements IController<MovimentacaoEspelho, MovimentacaoRequest, MovimentacaoFiltro> {
 
     @Autowired
     private MovimentacaoService movimentacaoService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @GetMapping
-    public ResponseEntity<Response<List<MovimentacaoEspelho>>> readAll() {
+    public ResponseEntity<Response<List<MovimentacaoEspelho>>> readAll(@Valid
+    MovimentacaoFiltro filtro) {
         Response<List<MovimentacaoEspelho>> response = new Response<List<MovimentacaoEspelho>>();
 
-        var list = movimentacaoService.findAll();
+        List<Movimentacao> list;
+        try {
+            if (filtro.getUsuarioId() != null) {
+                list = movimentacaoService.findByUsuario(
+                    usuarioService.findById(filtro.getUsuarioId())
+                );
+            } else {
+                list = movimentacaoService.findAll();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getErrors().add(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
         List<MovimentacaoEspelho> listEspelho = new ArrayList<MovimentacaoEspelho>();
         for (Movimentacao movimentacao : list) {
             listEspelho.add(new MovimentacaoEspelho(movimentacao));

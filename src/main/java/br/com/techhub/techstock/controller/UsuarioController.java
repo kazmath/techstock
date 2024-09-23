@@ -24,6 +24,7 @@ import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.service.UsuarioService;
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/api/usuario")
 public class UsuarioController implements IController<UsuarioEspelho, UsuarioRequest, IFilter> {
@@ -32,7 +33,9 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<Response<List<UsuarioEspelho>>> readAll() {
+    public ResponseEntity<Response<List<UsuarioEspelho>>> readAll(
+        IFilter filtro
+    ) {
         Response<List<UsuarioEspelho>> response = new Response<List<UsuarioEspelho>>();
 
         var list = usuarioService.findAll();

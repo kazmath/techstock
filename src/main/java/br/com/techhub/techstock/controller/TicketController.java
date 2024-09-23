@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
 import br.com.techhub.techstock.controller.espelhos.TicketStatusEnumEspelho;
-import br.com.techhub.techstock.controller.filters.IFilter;
+import br.com.techhub.techstock.controller.filters.TicketFiltro;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.enums.TicketStatus;
@@ -29,23 +28,22 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/ticket")
-public class TicketController implements IController<TicketEspelho, TicketRequest, IFilter> {
+public class TicketController implements IController<TicketEspelho, TicketRequest, TicketFiltro> {
 
     @Autowired
     private TicketService ticketService;
 
     @GetMapping
-    public ResponseEntity<Response<List<TicketEspelho>>> readAllFilter(
-        @RequestParam(required = false)
-        Long usuarioId
-    ) {
+    public ResponseEntity<Response<List<TicketEspelho>>> readAll(@Valid
+    TicketFiltro filtro) {
         Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
 
         List<Ticket> list;
-        if (usuarioId == null) {
+        if (filtro.getUsuarioId() == null) {
             list = ticketService.findAll();
         } else {
-            list = ticketService.findByUsuario(usuarioId);
+
+            list = ticketService.findByUsuario(filtro.getUsuarioId());
         }
 
         List<TicketEspelho> listEspelho = new ArrayList<TicketEspelho>();
@@ -138,11 +136,5 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @Override
-    public ResponseEntity<Response<List<TicketEspelho>>> readAll() {
-        throw new UnsupportedOperationException(
-            "Unimplemented method 'readAll'"
-        );
-    }
 
 }
