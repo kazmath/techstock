@@ -4,7 +4,7 @@ spring:
     web:
         resources:
             static-locations:
-            - classpath:/static/website
+                - classpath:/static/website
     profiles:
         active: dev
     application:
@@ -49,6 +49,6 @@ springdoc:
     default-produces-media-type: application/json
     # email: example@example.org
 # # JWT
-# jwt:
-#     secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
-#     expiration: 604800 # token com duração de 7 dias
+jwt:
+    secret: 1oic2hi97qhd0981b209cj1n208b1802hd981gdh01hf91h012h9d812h
+    expiration: 604800 # token com duração de 7 dias

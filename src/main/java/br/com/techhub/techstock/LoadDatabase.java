@@ -3,6 +3,7 @@ package br.com.techhub.techstock;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.Movimentacao;
+import br.com.techhub.techstock.model.ProfileType;
 import br.com.techhub.techstock.model.Setor;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
@@ -102,7 +104,7 @@ public class LoadDatabase {
             setorService.save(setor);
 
             var usuario = new Usuario();
-            usuario.setAdmin(false);
+            usuario.setProfileTypes(List.of(new ProfileType("Admin")));
             usuario.setEmail("daniel@gmail.com");
             usuario.setCodigo("202001252356");
             usuario.setNome("Daniel");
