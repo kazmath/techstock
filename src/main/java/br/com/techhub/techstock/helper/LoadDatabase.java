@@ -1,10 +1,11 @@
-package br.com.techhub.techstock;
+package br.com.techhub.techstock.helper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+import br.com.techhub.techstock.repository.ProfileTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,9 @@ public class LoadDatabase {
 
     @Autowired
     UsuarioService usuarioService;
+
+    @Autowired
+    ProfileTypeRepository profileTypeRepository;
 
     @Bean
     CommandLineRunner initDatabase() {
@@ -103,6 +107,12 @@ public class LoadDatabase {
             setor.setNome("TI");
             setorService.save(setor);
 
+            var perfil = ProfileType.builder()
+                    .id(1L)
+                    .nome("ADMIN")
+                    .build();
+            profileTypeRepository.save(perfil);
+
             var usuario = new Usuario();
             usuario.setProfileTypes(List.of(new ProfileType("Admin")));
             usuario.setEmail("daniel@gmail.com");
@@ -110,6 +120,8 @@ public class LoadDatabase {
             usuario.setNome("Daniel");
             usuario.setSenha("123456");
             usuario.setSetor(setor);
+            usuario.setStatus(Constants.ATIVO);
+            usuario.setProfileTypes(List.of(perfil));
             usuarioService.save(usuario);
 
             var ticket = new Ticket();

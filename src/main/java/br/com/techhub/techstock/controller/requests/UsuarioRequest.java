@@ -41,4 +41,7 @@ public class UsuarioRequest implements IRequest {
     @NotNull
     @JsonProperty("setorId")
     private Setor setor;
+
+    @NotNull
+    private Integer status;
 }

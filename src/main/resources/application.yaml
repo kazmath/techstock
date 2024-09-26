@@ -19,8 +19,8 @@ spring:
     datasource:
         driver-class-name: org.postgresql.Driver
         url: "jdbc:postgresql://localhost:5432/techstock"
-        username: kazuma
-        password: 123456
+        username: coresmarttime
+        password: root
     jpa:
         properties:
             hibernate:

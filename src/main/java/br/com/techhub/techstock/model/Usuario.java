@@ -51,6 +51,9 @@ public class Usuario extends BaseModel {
     @Column(name = "senha_hash", length = 50, nullable = false)
     private String senha;
 
+    @Column(name = "status", nullable = false)
+    private Integer status;
+
     // @Column(nullable = false, columnDefinition = "boolean default 'false'")
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "profile_type_usuario",
@@ -84,6 +87,7 @@ public class Usuario extends BaseModel {
         this.senha = request.getSenha();
         this.profileTypes = request.getProfileTypes();
         this.setor = request.getSetor();
+        this.status = request.getStatus();
     }
 
 }

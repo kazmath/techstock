@@ -2,16 +2,21 @@ package br.com.techhub.techstock.security;
 
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,69 +29,45 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
-    private final JWTUtils           jwtUtils;
+    private UserDetailsService userDetailsService;
+    private final JWTUtils jwtUtils;
 
-    public SecurityConfig(
-        UserDetailsService userDetailsService,
-        JWTUtils jwtUtils
-    ) {
-        this.jwtUtils = jwtUtils;
+    @Autowired
+    public SecurityConfig(@Lazy UserDetailsService userDetailsService, JWTUtils jwtUtils) {
         this.userDetailsService = userDetailsService;
+        this.jwtUtils = jwtUtils;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(
-                authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                    .requestMatchers(HttpMethod.POST)
-                    .hasAnyRole("ADMIN")
-                    .requestMatchers("/login/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            )
-            .addFilter(
-                new JWTAuthenticationFilter(
-                    authenticationManager(
-                        http.getSharedObject(AuthenticationConfiguration.class)
-                    ),
-                    jwtUtils
-                )
-            )
-            .addFilter(
-                new JWTAuthorizationFilter(
-                    authenticationManager(
-                        http.getSharedObject(AuthenticationConfiguration.class)
-                    ),
-                    jwtUtils,
-                    userDetailsService
-                )
-            )
-            .sessionManagement(
-                httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+                .authorizeHttpRequests(
+                        authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
+                                .requestMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
+                                .requestMatchers("/api/setor/**").permitAll()
+                                .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtils))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtils, userDetailsService))
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-        AuthenticationConfiguration authenticationConfiguration
+            AuthenticationConfiguration authenticationConfiguration
     ) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-    @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder());
-    }
+//
+//    @Autowired
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(bCryptPasswordEncoder());
+//    }
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -94,20 +75,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource configurationSource() {
-        var corsConfiguration = new CorsConfiguration()
-            .applyPermitDefaultValues();
-
-        corsConfiguration.setAllowedMethods(
-            List.of("POST", "GET", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
-        );
-
-        final var source = new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration("/**", corsConfiguration);
-
-        return source;
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.debug(false)
+                .ignoring()
+                .requestMatchers("/css/**", "/js /**", "/img/**", "/lib/**", "/favicon.ico");
     }
-
 
 }
