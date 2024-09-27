@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.techhub.techstock.helper.Constants;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/usuario")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController implements IController<UsuarioEspelho, UsuarioRequest, IFilter> {
 
     @Autowired
