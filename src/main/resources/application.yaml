@@ -49,6 +49,6 @@ springdoc:
     default-produces-media-type: application/json
     # email: example@example.org
 # # JWT
-jwt:
+token:
     secret: 1oic2hi97qhd0981b209cj1n208b1802hd981gdh01hf91h012h9d812h
     expiration: 604800 # token com duração de 7 dias

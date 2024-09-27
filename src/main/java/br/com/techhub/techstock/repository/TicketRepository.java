@@ -11,5 +11,5 @@ import br.com.techhub.techstock.model.Usuario;
 @Repository
 public interface TicketRepository extends ListCrudRepository<Ticket, Long> {
 
-    public List<Ticket> findByUsuario(Usuario usuario);
+    List<Ticket> findByUsuario(Usuario usuario);
 }

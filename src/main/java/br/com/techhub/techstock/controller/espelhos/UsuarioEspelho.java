@@ -1,9 +1,7 @@
 package br.com.techhub.techstock.controller.espelhos;
 
-import java.util.List;
-
-import br.com.techhub.techstock.model.ProfileType;
 import br.com.techhub.techstock.model.Usuario;
+import br.com.techhub.techstock.model.enums.UsuarioPerfil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +14,7 @@ public class UsuarioEspelho implements IEspelho {
     private String            nome;
     private String            email;
     private String            senha;
-    private List<ProfileType> profileTypes;
+    private UsuarioPerfil usuarioPerfil;
     private Long              setorId;
 
     public UsuarioEspelho(Usuario usuario) {
@@ -25,7 +23,7 @@ public class UsuarioEspelho implements IEspelho {
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
-        this.profileTypes = usuario.getProfileTypes();
+        this.usuarioPerfil = usuario.getUsuarioPerfil();
         this.setorId = usuario.getSetor().getId();
     }
 

@@ -3,9 +3,11 @@ package br.com.techhub.techstock.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.techhub.techstock.helper.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     private UsuarioService usuarioService;
 
     @GetMapping
+    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     public ResponseEntity<Response<List<UsuarioEspelho>>> readAll(
         IFilter filtro
     ) {
@@ -59,6 +62,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     public ResponseEntity<Response<UsuarioEspelho>> read(@PathVariable
     Long id) {
         Response<UsuarioEspelho> response = new Response<UsuarioEspelho>();
@@ -76,6 +80,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize(Constants.SECURITY_ROLE_USER)
     public ResponseEntity<Response<Long>> update(@PathVariable
     Long id, @Valid @RequestBody
     UsuarioRequest request, BindingResult result) {
@@ -95,6 +100,7 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     public ResponseEntity<Response<Boolean>> delete(@PathVariable
     Long id) {
         Response<Boolean> response = new Response<Boolean>();

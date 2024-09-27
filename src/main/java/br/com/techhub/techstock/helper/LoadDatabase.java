@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
-import br.com.techhub.techstock.repository.ProfileTypeRepository;
+import br.com.techhub.techstock.model.enums.UsuarioPerfil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.Movimentacao;
-import br.com.techhub.techstock.model.ProfileType;
 import br.com.techhub.techstock.model.Setor;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
@@ -27,6 +26,7 @@ import br.com.techhub.techstock.service.MovimentacaoService;
 import br.com.techhub.techstock.service.SetorService;
 import br.com.techhub.techstock.service.TicketService;
 import br.com.techhub.techstock.service.UsuarioService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 public class LoadDatabase {
@@ -48,9 +48,6 @@ public class LoadDatabase {
 
     @Autowired
     UsuarioService usuarioService;
-
-    @Autowired
-    ProfileTypeRepository profileTypeRepository;
 
     @Bean
     CommandLineRunner initDatabase() {
@@ -107,21 +104,14 @@ public class LoadDatabase {
             setor.setNome("TI");
             setorService.save(setor);
 
-            var perfil = ProfileType.builder()
-                    .id(1L)
-                    .nome("ADMIN")
-                    .build();
-            profileTypeRepository.save(perfil);
-
             var usuario = new Usuario();
-            usuario.setProfileTypes(List.of(new ProfileType("Admin")));
             usuario.setEmail("daniel@gmail.com");
             usuario.setCodigo("202001252356");
             usuario.setNome("Daniel");
-            usuario.setSenha("123456");
+            String encryptedPassword = new BCryptPasswordEncoder().encode("123456");
+            usuario.setSenha(encryptedPassword);
             usuario.setSetor(setor);
-            usuario.setStatus(Constants.ATIVO);
-            usuario.setProfileTypes(List.of(perfil));
+            usuario.setUsuarioPerfil(UsuarioPerfil.ADMIN);
             usuarioService.save(usuario);
 
             var ticket = new Ticket();

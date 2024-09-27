@@ -1,6 +1,5 @@
 package br.com.techhub.techstock.service;
 
-import br.com.techhub.techstock.helper.Constants;
 import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.repository.UsuarioRepository;
 import br.com.techhub.techstock.security.UserSS;
@@ -26,8 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 usuario.getId(),
                 usuario.getEmail(),
                 usuario.getSenha(),
-                usuario.getProfileTypes(),
-                usuario.getStatus().compareTo(Constants.ATIVO) == 0
+                usuario.getUsuarioPerfil()
         );
     }
 
