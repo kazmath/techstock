@@ -45,4 +45,70 @@ public class ViewHandler {
     public ResponseEntity<String> index() {
         return handleViewRequest("index.html");
     }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<String> dashboard() {
+        return handleViewRequest("adm_inicial.html");
+    }
+
+    @GetMapping("/usuario")
+    public ResponseEntity<String> usuario() {
+        return handleViewRequest("usuario.html");
+    }
+
+    @GetMapping("/usuario/cadastro")
+    public ResponseEntity<String> usuario_cadastro() {
+        return handleViewRequest("cadastro_user.html");
+    }
+
+    @GetMapping("/usuario/editar")
+    public ResponseEntity<String> usuario_editar() {
+        return handleViewRequest("cadastro_user.html");
+    }
+
+    @GetMapping("/equipamento")
+    public ResponseEntity<String> equipamento() {
+        return handleViewRequest("equipamentos.html");
+    }
+
+    @GetMapping("/equipamento/cadastro")
+    public ResponseEntity<String> equipamento_cadastro() {
+        return handleViewRequest("cadastro_equipamentos.html");
+    }
+
+    @GetMapping("/equipamento/editar")
+    public ResponseEntity<String> equipamento_cadastro_editar() {
+        return handleViewRequest("cadastro_equipamentos.html");
+    }
+
+    // @GetMapping("/equipamento/conserto")
+    // public ResponseEntity<String> equipamento_cadastro_conserto() {
+    //     return handleViewRequest("cadastro_equipamentos.html");
+    // }
+
+    // @GetMapping("/equipamento/uso")
+    // public ResponseEntity<String> equipamento_cadastro_conserto() {
+    //     return handleViewRequest("cadastro_equipamentos.html");
+    // }
+
+
+ //TODO: Implementar Filto de equipamento (Conserto, Uso),
+
+    @GetMapping("/ticket")
+    public ResponseEntity<String> tickets() {
+        return handleViewRequest("tickets.html");
+    }
+
+    //TODO:Implemnta filtro de tickets aberto esse mês
+
+    @GetMapping("/ticket/criar")
+    public ResponseEntity<String> ticket_criar() {
+        return handleViewRequest("criarticket.html");
+    }
+
+    @GetMapping("/movimentacao")
+    public ResponseEntity<String> movimentacao() {
+        return handleViewRequest("log.html");
+    }
+
 }
