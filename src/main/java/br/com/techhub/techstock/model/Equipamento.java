@@ -40,6 +40,9 @@ public class Equipamento extends BaseModel {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(length = 15, nullable = false)
+    private String tombamento;
+
     @Column(length = 100, nullable = false)
     private String nome;
 
@@ -90,6 +93,7 @@ public class Equipamento extends BaseModel {
     public Equipamento(EquipamentoRequest request) {
         super();
         this.id = request.getId();
+        this.tombamento = request.getTombamento();
         this.nome = request.getNome();
         this.descricao = request.getDescricao();
         this.fabricante = request.getFabricante();
@@ -98,6 +102,7 @@ public class Equipamento extends BaseModel {
         this.status = request.getStatus();
         this.dt_entrada = request.getDt_entrada();
         this.dt_saida = request.getDt_saida();
+        this.usuarioComEquipamento = request.getUsuarioComEquipamento();
         this.categoria = request.getCategoria();
     }
 

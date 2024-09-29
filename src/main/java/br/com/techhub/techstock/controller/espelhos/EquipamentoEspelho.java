@@ -13,28 +13,30 @@ import lombok.Setter;
 @Setter
 public class EquipamentoEspelho implements IEspelho {
 
-    private Long id;
-    private String            nome;
-    private String            descricao;
-    private String            fabricante;
-    private String            modelo;
+    private Long   id;
+    private String tombamento;
+    private String nome;
+    private String descricao;
+    private String fabricante;
+    private String modelo;
 
     @JsonFormat(pattern = "yyyy")
-    private Date              anoFabricacao;
+    private Date anoFabricacao;
 
     private EquipamentoStatus status;
 
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
-    private Date              dtEntrada;
+    private Date dtEntrada;
 
     @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
-    private Date              dtSaida;
+    private Date dtSaida;
 
     private CategoriaEspelho categoria;
     private UsuarioEspelho   usuarioComEquipamento;
 
     public EquipamentoEspelho(Equipamento equipamento) {
         this.id = equipamento.getId();
+        this.tombamento = equipamento.getTombamento();
         this.nome = equipamento.getNome();
         this.descricao = equipamento.getDescricao();
         this.fabricante = equipamento.getFabricante();

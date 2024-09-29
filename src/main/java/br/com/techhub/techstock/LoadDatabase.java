@@ -56,6 +56,7 @@ public class LoadDatabase {
 
             var equipamento = new Equipamento();
             equipamento.setAno_fabricacao(new Date());
+            equipamento.setTombamento("2002OKLAKS");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Caixa de som legal");
             equipamento.setDt_entrada(new Date());
@@ -74,6 +75,7 @@ public class LoadDatabase {
 
             equipamento = new Equipamento();
             equipamento.setAno_fabricacao(new Date());
+            equipamento.setTombamento("2002OKLAKD");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Um slideshow que é show");
             equipamento.setDt_entrada(new Date());
@@ -100,6 +102,7 @@ public class LoadDatabase {
 
             equipamento = new Equipamento();
             equipamento.setAno_fabricacao(new Date());
+            equipamento.setTombamento("2002OKLAKG");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Cadeira azul");
             equipamento.setDt_entrada(
