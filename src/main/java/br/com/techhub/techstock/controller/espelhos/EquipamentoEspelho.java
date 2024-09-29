@@ -46,9 +46,11 @@ public class EquipamentoEspelho implements IEspelho {
         this.dtEntrada = equipamento.getDt_entrada();
         this.dtSaida = equipamento.getDt_saida();
         this.categoria = new CategoriaEspelho(equipamento.getCategoria());
-        this.usuarioComEquipamento = new UsuarioEspelho(
-            equipamento.getUsuarioComEquipamento()
-        );
+        if (equipamento.getUsuarioComEquipamento() != null) {
+            this.usuarioComEquipamento = new UsuarioEspelho(
+                equipamento.getUsuarioComEquipamento()
+            );
+        }
     }
 
 }
