@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class ViewHandler {
 
-    public String staticDir = System.getProperty("user.dir") + File.separator
+    private String staticDir = System.getProperty("user.dir") + File.separator
         + "src/main/resources/static/website" + File.separator;
 
-    public String getHtml(String filename) throws FileNotFoundException {
+    private String getHtml(String filename) throws FileNotFoundException {
         var result = "";
 
         File file = new File(staticDir + filename);
@@ -32,14 +32,17 @@ public class ViewHandler {
         }
     }
 
-    @GetMapping("/equipamentos")
-    public ResponseEntity<String> equipamentos() {
+    private ResponseEntity<String> handleViewRequest(String filename) {
         try {
-            return ResponseEntity.ok(getHtml("equipamentos.html"));
+            return ResponseEntity.ok(getHtml(filename));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
 
+    @GetMapping
+    public ResponseEntity<String> index() {
+        return handleViewRequest("index.html");
+    }
 }
