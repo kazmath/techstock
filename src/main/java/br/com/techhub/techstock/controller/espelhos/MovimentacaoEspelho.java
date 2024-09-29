@@ -21,6 +21,7 @@ public class MovimentacaoEspelho implements IEspelho {
 
     private TicketEspelho  ticket;
     private UsuarioEspelho usuario;
+    private UsuarioEspelho usuarioAdm;
 
     public MovimentacaoEspelho(Movimentacao movimentacao) {
         this.id = movimentacao.getId();
@@ -28,6 +29,7 @@ public class MovimentacaoEspelho implements IEspelho {
         this.data = movimentacao.getData();
         this.ticket = new TicketEspelho(movimentacao.getTicket(), false);
         this.usuario = new UsuarioEspelho(movimentacao.getUsuario());
+        this.usuario = new UsuarioEspelho(movimentacao.getUsuarioAdm());
     }
 
 }

@@ -36,6 +36,10 @@ public class MovimentacaoRequest implements IRequest {
     private Ticket ticket;
 
     @NotNull
+    @JsonProperty("usuarioAdmId")
+    private Usuario usuarioAdm;
+
+    @NotNull
     @JsonProperty("usuarioId")
     private Usuario usuario;
 

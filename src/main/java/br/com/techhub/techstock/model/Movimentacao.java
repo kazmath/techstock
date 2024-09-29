@@ -53,6 +53,10 @@ public class Movimentacao extends BaseModel {
     private Ticket ticket;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario_adm", nullable = true)
+    private Usuario usuarioAdm;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
