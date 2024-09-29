@@ -3,8 +3,9 @@ spring:
     #     static-path-pattern:
     web:
         resources:
-            static-locations:
-            - classpath:/static/website
+            add-mappings: false
+            # static-locations:
+            #     - classpath:/static/website/assets
     profiles:
         active: dev
     application:
