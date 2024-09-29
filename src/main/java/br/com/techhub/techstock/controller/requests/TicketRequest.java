@@ -25,6 +25,10 @@ public class TicketRequest implements IRequest {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date dt_reserva;
+
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_devolucao;
 
     private String observacao;

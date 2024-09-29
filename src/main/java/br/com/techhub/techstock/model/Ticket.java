@@ -42,6 +42,10 @@ public class Ticket extends BaseModel {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
+    private Date dt_reserva;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
     private Date dt_devolucao;
 
     @Column(nullable = true, length = 255)
@@ -73,6 +77,7 @@ public class Ticket extends BaseModel {
     public Ticket(TicketRequest request) {
         super();
         this.id = getId();
+        this.dt_reserva = getDt_reserva();
         this.dt_devolucao = getDt_devolucao();
         this.observacao = getObservacao();
         this.status = getStatus();

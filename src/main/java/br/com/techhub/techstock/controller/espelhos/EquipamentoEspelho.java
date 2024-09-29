@@ -25,10 +25,10 @@ public class EquipamentoEspelho implements IEspelho {
 
     private EquipamentoStatus status;
 
-    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dtEntrada;
 
-    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dtSaida;
 
     private CategoriaEspelho categoria;

@@ -118,6 +118,9 @@ public class LoadDatabase {
 
 
             var ticket = new Ticket();
+            ticket.setDt_reserva(
+                Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
+            );
             ticket.setDt_devolucao(
                 Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
             );
@@ -134,6 +137,9 @@ public class LoadDatabase {
             movimentacaoService.save(movimentacao);
 
             ticket = new Ticket();
+            ticket.setDt_reserva(
+                Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
+            );
             ticket.setDt_devolucao(
                 Date.from(Instant.now().plus(10, ChronoUnit.DAYS))
             );

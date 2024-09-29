@@ -15,12 +15,15 @@ public class TicketEspelho implements IEspelho {
 
     private Long id;
 
-    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date dt_reserva;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dt_devolucao;
 
     private String observacao;
 
-    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dt_abertura;
 
     private TicketStatus       status;
@@ -29,6 +32,7 @@ public class TicketEspelho implements IEspelho {
 
     public TicketEspelho(Ticket ticket) {
         this.id = ticket.getId();
+        this.dt_reserva = ticket.getDt_reserva();
         this.dt_devolucao = ticket.getDt_devolucao();
         this.observacao = ticket.getObservacao();
         this.dt_abertura = ticket.getDtCreate();
@@ -39,6 +43,7 @@ public class TicketEspelho implements IEspelho {
 
     public TicketEspelho(Ticket ticket, boolean includeUsuario) {
         this.id = ticket.getId();
+        this.dt_devolucao = ticket.getDt_reserva();
         this.dt_devolucao = ticket.getDt_devolucao();
         this.observacao = ticket.getObservacao();
         this.dt_abertura = ticket.getDtCreate();
