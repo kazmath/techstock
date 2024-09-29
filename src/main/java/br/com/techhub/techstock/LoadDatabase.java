@@ -64,6 +64,7 @@ public class LoadDatabase {
             equipamento.setModelo("Gol");
             equipamento.setNome("Caixa de som");
             equipamento.setStatus(EquipamentoStatus.EM_MANUTENCAO);
+            equipamento.setUsuarioComEquipamento(null);
             equipamentoService.save(equipamento);
 
             categoria = new Categoria();
@@ -81,20 +82,7 @@ public class LoadDatabase {
             equipamento.setModelo("Fiat Uno");
             equipamento.setNome("SlideShow");
             equipamento.setStatus(EquipamentoStatus.DISPONIVEL);
-            equipamentoService.save(equipamento);
-
-            equipamento = new Equipamento();
-            equipamento.setAno_fabricacao(new Date());
-            equipamento.setCategoria(categoria);
-            equipamento.setDescricao("Cadeira azul");
-            equipamento.setDt_entrada(
-                Date.from(Instant.now().minus(1, ChronoUnit.DAYS))
-            );
-            equipamento.setDt_saida(new Date());
-            equipamento.setFabricante("Ford");
-            equipamento.setModelo("Ford ka");
-            equipamento.setNome("Cadeira");
-            equipamento.setStatus(EquipamentoStatus.INDISPONIVEL);
+            equipamento.setUsuarioComEquipamento(null);
             equipamentoService.save(equipamento);
 
             var setor = new Setor();
@@ -109,6 +97,22 @@ public class LoadDatabase {
             usuario.setSenha("123456");
             usuario.setSetor(setor);
             usuarioService.save(usuario);
+
+            equipamento = new Equipamento();
+            equipamento.setAno_fabricacao(new Date());
+            equipamento.setCategoria(categoria);
+            equipamento.setDescricao("Cadeira azul");
+            equipamento.setDt_entrada(
+                Date.from(Instant.now().minus(1, ChronoUnit.DAYS))
+            );
+            equipamento.setDt_saida(new Date());
+            equipamento.setFabricante("Ford");
+            equipamento.setModelo("Ford ka");
+            equipamento.setNome("Cadeira");
+            equipamento.setStatus(EquipamentoStatus.INDISPONIVEL);
+            equipamento.setUsuarioComEquipamento(usuario);
+            equipamentoService.save(equipamento);
+
 
             var ticket = new Ticket();
             ticket.setDt_devolucao(

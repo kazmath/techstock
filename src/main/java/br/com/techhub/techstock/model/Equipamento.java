@@ -69,6 +69,10 @@ public class Equipamento extends BaseModel {
     private Date dt_saida;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = true)
+    private Usuario usuarioComEquipamento;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
