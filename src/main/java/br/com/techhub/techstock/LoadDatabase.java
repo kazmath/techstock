@@ -150,6 +150,17 @@ public class LoadDatabase {
             movimentacao.setTicket(ticket);
             movimentacao.setTipo(MovimentacaoTipo.SAIDA);
             movimentacao.setUsuario(usuario);
+
+            usuario = new Usuario();
+            usuario.setAdmin(true);
+            usuario.setEmail("matheus@gmail.com");
+            usuario.setCodigo("202001252426");
+            usuario.setNome("Matheus");
+            usuario.setSenha("123456");
+            usuario.setSetor(setor);
+            usuarioService.save(usuario);
+
+            movimentacao.setUsuarioAdm(usuario);
             movimentacaoService.save(movimentacao);
 
 

@@ -30,7 +30,7 @@ public class MovimentacaoEspelho implements IEspelho {
         this.ticket = new TicketEspelho(movimentacao.getTicket(), false);
         this.usuario = new UsuarioEspelho(movimentacao.getUsuario());
         if (movimentacao.getUsuarioAdm() != null) {
-            this.usuario = new UsuarioEspelho(movimentacao.getUsuarioAdm());
+            this.usuarioAdm = new UsuarioEspelho(movimentacao.getUsuarioAdm());
         }
     }
 
