@@ -76,10 +76,10 @@ public class ViewHandler {
         return handleViewRequest("cadastro_equipamentos.html");
     }
 
-    @GetMapping("/equipamento/editar")
-    public ResponseEntity<String> equipamento_cadastro_editar() {
-        return handleViewRequest("cadastro_equipamentos.html");
-    }
+    // @GetMapping("/equipamento/editar")
+    // public ResponseEntity<String> equipamento_cadastro_editar() {
+    //     return handleViewRequest("cadastro_equipamentos.html");
+    // }
 
     // @GetMapping("/equipamento/conserto")
     // public ResponseEntity<String> equipamento_cadastro_conserto() {
@@ -96,11 +96,22 @@ public class ViewHandler {
 
     @GetMapping("/ticket")
     public ResponseEntity<String> tickets() {
-        return handleViewRequest("tickets.html");
+        return handleViewRequest("ticket.html");
     }
+
+    //TODO:Implementar logica para a tela de ticket do usuario
+    // @GetMapping("/perfil")
+    // public ResponseEntity<String> tickets() {
+    //     return handleViewRequest("tickets.html");
+    // }
 
     //TODO:Implemnta filtro de tickets aberto esse mês
 
+    // @GetMapping("/ticket/mes")
+    // public ResponseEntity<String> ticket_criar() {
+    //     return handleViewRequest("criarticket.html");
+    // }
+    
     @GetMapping("/ticket/criar")
     public ResponseEntity<String> ticket_criar() {
         return handleViewRequest("criarticket.html");
