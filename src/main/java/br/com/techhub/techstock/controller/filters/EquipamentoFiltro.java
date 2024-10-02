@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class MovimentacaoFiltro extends IFilter {
+public class EquipamentoFiltro extends IFilter {
     private String query;
 
-    private Long usuarioId;
-    private Long usuarioAdmId;
+    private Long   categoriaId;
+    private String fabricante;
+    private String status;
 }

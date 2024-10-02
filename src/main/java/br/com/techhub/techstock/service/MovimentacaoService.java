@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.com.techhub.techstock.controller.filters.MovimentacaoFiltro;
 import br.com.techhub.techstock.model.Movimentacao;
 import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.repository.MovimentacaoRepository;
@@ -23,5 +24,10 @@ public class MovimentacaoService extends BaseService<Movimentacao, MovimentacaoR
         var result = repository.findByUsuario(usuario.get());
 
         return result;
+    }
+
+
+    public List<Movimentacao> filterBy(MovimentacaoFiltro filtro) {
+        return repository.filterBy(filtro);
     }
 }

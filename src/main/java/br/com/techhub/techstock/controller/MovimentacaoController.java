@@ -44,19 +44,12 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
         Response<List<MovimentacaoEspelho>> response = new Response<List<MovimentacaoEspelho>>();
 
         List<Movimentacao> list;
-        try {
-            if (filtro.getUsuarioId() != null) {
-                list = movimentacaoService.findByUsuario(
-                    usuarioService.findById(filtro.getUsuarioId())
-                );
-            } else {
-                list = movimentacaoService.findAll();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.getErrors().add(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        if (filtro.getUsuarioId() != null) {
+            list = movimentacaoService.filterBy(filtro);
+        } else {
+            list = movimentacaoService.findAll();
         }
+
         List<MovimentacaoEspelho> listEspelho = new ArrayList<MovimentacaoEspelho>();
         for (Movimentacao movimentacao : list) {
             listEspelho.add(new MovimentacaoEspelho(movimentacao));

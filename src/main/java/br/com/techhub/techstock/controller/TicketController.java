@@ -39,12 +39,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
 
         List<Ticket> list;
-        if (filtro.getUsuarioId() == null) {
-            list = ticketService.findAll();
-        } else {
-
-            list = ticketService.findByUsuario(filtro.getUsuarioId());
-        }
+        list = ticketService.filterBy(filtro);
 
         List<TicketEspelho> listEspelho = new ArrayList<TicketEspelho>();
         for (Ticket ticket : list) {

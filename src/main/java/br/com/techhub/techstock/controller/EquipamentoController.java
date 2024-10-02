@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.techhub.techstock.controller.espelhos.EquipamentoEspelho;
 import br.com.techhub.techstock.controller.espelhos.EquipamentoStatusEnumEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
-import br.com.techhub.techstock.controller.filters.IFilter;
+import br.com.techhub.techstock.controller.filters.EquipamentoFiltro;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
@@ -28,18 +28,21 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/equipamento")
-public class EquipamentoController implements IController<EquipamentoEspelho, EquipamentoRequest, IFilter> {
+public class EquipamentoController implements IController<EquipamentoEspelho, EquipamentoRequest, EquipamentoFiltro> {
 
     @Autowired
     private EquipamentoService equipamentoService;
 
     @GetMapping
     public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll(
-        IFilter filtro
+        EquipamentoFiltro filtro
     ) {
         Response<List<EquipamentoEspelho>> response = new Response<List<EquipamentoEspelho>>();
 
-        var list = equipamentoService.findAll();
+        List<Equipamento> list;
+        list = equipamentoService.filterBy(filtro);
+
+        // var list = equipamentoService.findAll();
         List<EquipamentoEspelho> listEspelho = new ArrayList<EquipamentoEspelho>();
         for (Equipamento equipamento : list) {
             listEspelho.add(new EquipamentoEspelho(equipamento));
