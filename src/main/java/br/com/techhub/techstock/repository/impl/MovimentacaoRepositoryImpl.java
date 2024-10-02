@@ -42,14 +42,14 @@ public class MovimentacaoRepositoryImpl implements RFilter<Movimentacao, Movimen
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
-            qlString += "u.id = :usuarioId";
+            qlString += "m.usuario.id = :usuarioId";
         }
 
         if (filter.getUsuarioAdmId() != null) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
-            qlString += "u.id = :usuarioAdmId";
+            qlString += "m.usuarioAdm.id = :usuarioAdmId";
         }
 
         // inner join Usuario u

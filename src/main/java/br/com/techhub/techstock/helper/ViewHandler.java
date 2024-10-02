@@ -76,24 +76,6 @@ public class ViewHandler {
         return handleViewRequest("cadastro_equipamentos.html");
     }
 
-    // @GetMapping("/equipamento/editar")
-    // public ResponseEntity<String> equipamento_cadastro_editar() {
-    //     return handleViewRequest("cadastro_equipamentos.html");
-    // }
-
-    // @GetMapping("/equipamento/conserto")
-    // public ResponseEntity<String> equipamento_cadastro_conserto() {
-    //     return handleViewRequest("cadastro_equipamentos.html");
-    // }
-
-    // @GetMapping("/equipamento/uso")
-    // public ResponseEntity<String> equipamento_cadastro_conserto() {
-    //     return handleViewRequest("cadastro_equipamentos.html");
-    // }
-
-
- //TODO: Implementar Filto de equipamento (Conserto, Uso),
-
     @GetMapping("/ticket")
     public ResponseEntity<String> tickets() {
         return handleViewRequest("ticket.html");
@@ -103,13 +85,6 @@ public class ViewHandler {
     // @GetMapping("/perfil")
     // public ResponseEntity<String> tickets() {
     //     return handleViewRequest("tickets.html");
-    // }
-
-    //TODO:Implemnta filtro de tickets aberto esse mês
-
-    // @GetMapping("/ticket/mes")
-    // public ResponseEntity<String> ticket_criar() {
-    //     return handleViewRequest("criarticket.html");
     // }
     
     @GetMapping("/ticket/criar")
