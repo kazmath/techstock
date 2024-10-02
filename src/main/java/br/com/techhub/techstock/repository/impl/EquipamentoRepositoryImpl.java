@@ -18,7 +18,7 @@ public class EquipamentoRepositoryImpl implements RFilter<Equipamento, Equipamen
     public List<Equipamento> filterBy(EquipamentoFiltro filter) {
         String qlString = "";
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
@@ -41,31 +41,32 @@ public class EquipamentoRepositoryImpl implements RFilter<Equipamento, Equipamen
             qlString += "c.id = :categoriaId";
         }
 
-        if (filter.getFabricante() != null) {
+        if (filter.getFabricante() != null && !filter.getFabricante()
+            .isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
             qlString += "lower(e.fabricante) like lower(:fabricante)";
         }
 
-        if (filter.getStatus() != null) {
+        if (filter.getStatus() != null && !filter.getStatus().isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
-            qlString += "e.status = :status";
+            qlString += "lower(e.status) = lower(:status)";
         }
 
         qlString = """
             select e from Equipamento e
             inner join Categoria c
                 on e.categoria.id = c.id
-            """ + (qlString.isBlank() ? "" : "where " + qlString) + """
-            order by e.dt_create
+            """ + (qlString.isBlank() ? "" : "where " + qlString + " ") + """
+            order by e.dtCreate
             """;
 
         var query = entityManager.createQuery(qlString);
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             query.setParameter("query", "%" + filter.getQuery() + "%");
         }
 
@@ -73,14 +74,15 @@ public class EquipamentoRepositoryImpl implements RFilter<Equipamento, Equipamen
             query.setParameter("categoriaId", filter.getCategoriaId());
         }
 
-        if (filter.getFabricante() != null) {
+        if (filter.getFabricante() != null && !filter.getFabricante()
+            .isBlank()) {
             query.setParameter(
                 "fabricante",
                 "%" + filter.getFabricante() + "%"
             );
         }
 
-        if (filter.getStatus() != null) {
+        if (filter.getStatus() != null && !filter.getStatus().isBlank()) {
             query.setParameter("status", filter.getStatus());
         }
 

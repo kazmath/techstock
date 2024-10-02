@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.UsuarioEspelho;
-import br.com.techhub.techstock.controller.filters.IFilter;
+import br.com.techhub.techstock.controller.filters.UsuarioFiltro;
+import br.com.techhub.techstock.controller.filters.UsuarioFiltro;
 import br.com.techhub.techstock.controller.requests.UsuarioRequest;
 import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.service.UsuarioService;
@@ -27,18 +28,18 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/usuario")
-public class UsuarioController implements IController<UsuarioEspelho, UsuarioRequest, IFilter> {
+public class UsuarioController implements IController<UsuarioEspelho, UsuarioRequest, UsuarioFiltro> {
 
     @Autowired
     private UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<Response<List<UsuarioEspelho>>> readAll(
-        IFilter filtro
+        UsuarioFiltro filtro
     ) {
         Response<List<UsuarioEspelho>> response = new Response<List<UsuarioEspelho>>();
 
-        var list = usuarioService.findAll();
+        List<Usuario> list = usuarioService.filterBy(filtro);
         List<UsuarioEspelho> listEspelho = new ArrayList<UsuarioEspelho>();
         for (Usuario usuario : list) {
             listEspelho.add(new UsuarioEspelho(usuario));

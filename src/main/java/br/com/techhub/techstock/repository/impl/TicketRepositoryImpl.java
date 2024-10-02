@@ -1,6 +1,5 @@
 package br.com.techhub.techstock.repository.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,7 +23,7 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
     public List<Ticket> filterBy(TicketFiltro filter) {
         String qlString = "";
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
@@ -42,7 +41,7 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
                 """;
         }
 
-        if (filter.getStatus() != null) {
+        if (filter.getStatus() != null && !filter.getStatus().isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
@@ -63,14 +62,22 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
             qlString += "c.id = :categoriaId";
         }
 
-        if (filter.getDt_reserva() != null) {
+        if ((filter.getDt_reserva_begin() != null && !filter
+            .getDt_reserva_begin()
+            .isBlank()) || (filter.getDt_reserva_end() != null && !filter
+                .getDt_reserva_end()
+                .isBlank())) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
             qlString += "t.dt_reserva between :dt_reserva_begin and :dt_reserva_end";
         }
 
-        if (filter.getDt_devolucao() != null) {
+        if ((filter.getDt_devolucao_begin() != null && !filter
+            .getDt_devolucao_begin()
+            .isBlank()) || (filter.getDt_devolucao_end() != null && !filter
+                .getDt_devolucao_end()
+                .isBlank())) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
@@ -85,17 +92,17 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
                 on t.equipamento.id = e.id
             inner join Categoria c
                 on e.categoria.id = c.id
-            """ + (qlString.isBlank() ? "" : "where " + qlString) + """
-            order by e.dt_create
+            """ + (qlString.isBlank() ? "" : "where " + qlString + " ") + """
+            order by e.dtCreate
             """;
 
         var query = entityManager.createQuery(qlString);
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             query.setParameter("query", "%" + filter.getQuery() + "%");
         }
 
-        if (filter.getStatus() != null) {
+        if (filter.getStatus() != null && !filter.getStatus().isBlank()) {
             query.setParameter("status", filter.getStatus());
         }
 
@@ -107,27 +114,49 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
             query.setParameter("categoriaId", filter.getCategoriaId());
         }
 
-        if (filter.getDt_reserva() != null) {
+        if ((filter.getDt_reserva_begin() != null && !filter
+            .getDt_reserva_begin()
+            .isBlank()) || (filter.getDt_reserva_end() != null && !filter
+                .getDt_reserva_end()
+                .isBlank())) {
             var df = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedDate;
+            Date parsedDateBegin;
+            Date parsedDateEnd;
+            Calendar parsedDateBeginningOfDay = new GregorianCalendar();
+            Calendar parsedDateEndOfDay = new GregorianCalendar();
 
             try {
-                parsedDate = df.parse(filter.getDt_reserva());
-            } catch (ParseException e) {
-                e.printStackTrace();
-                parsedDate = new Date();
+                if (!(filter.getDt_reserva_begin() != null)) {
+                    throw new Exception();
+                }
+                parsedDateBegin = df.parse(filter.getDt_reserva_begin());
+                parsedDateBeginningOfDay.setTime(parsedDateBegin);
+            } catch (Exception e) {
+                parsedDateBegin = new Date();
+                parsedDateBeginningOfDay.setTime(parsedDateBegin);
+                parsedDateBeginningOfDay.set(Calendar.DAY_OF_MONTH, 1);
             }
-            Calendar parsedDateBeginningOfDay;
-            Calendar parsedDateEndOfDay;
             try {
-                parsedDateBeginningOfDay = new GregorianCalendar();
-                parsedDateBeginningOfDay.setTime(parsedDate);
+                if (!(filter.getDt_reserva_end() != null)) {
+                    throw new Exception();
+                }
+                parsedDateEnd = df.parse(filter.getDt_reserva_end());
+                if (!parsedDateBegin.before(parsedDateEnd))
+                    throw new Exception();
+                parsedDateEndOfDay.setTime(parsedDateEnd);
+            } catch (Exception e) {
+                parsedDateEnd = parsedDateBegin;
+                parsedDateEndOfDay.setTime(parsedDateEnd);
+                parsedDateEndOfDay.set(
+                    Calendar.DAY_OF_MONTH,
+                    parsedDateEndOfDay.getActualMaximum(Calendar.DAY_OF_MONTH)
+                );
+            }
+            try {
                 parsedDateBeginningOfDay.set(Calendar.HOUR_OF_DAY, 0);
                 parsedDateBeginningOfDay.set(Calendar.MINUTE, 0);
                 parsedDateBeginningOfDay.set(Calendar.SECOND, 0);
 
-                parsedDateEndOfDay = new GregorianCalendar();
-                parsedDateEndOfDay.setTime(parsedDate);
                 parsedDateEndOfDay.set(Calendar.HOUR_OF_DAY, 23);
                 parsedDateEndOfDay.set(Calendar.MINUTE, 59);
                 parsedDateEndOfDay.set(Calendar.SECOND, 59);
@@ -148,27 +177,50 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
             );
         }
 
-        if (filter.getDt_devolucao() != null) {
+        if (filter.getDt_devolucao_begin() != null && !filter
+            .getDt_devolucao_begin()
+            .isBlank() || filter.getDt_devolucao_end() != null && !filter
+                .getDt_devolucao_end()
+                .isBlank()) {
             var df = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedDate;
+            Date parsedDateBegin;
+            Date parsedDateEnd;
+            Calendar parsedDateBeginningOfDay = new GregorianCalendar();
+            Calendar parsedDateEndOfDay = new GregorianCalendar();
 
             try {
-                parsedDate = df.parse(filter.getDt_devolucao());
-            } catch (ParseException e) {
-                e.printStackTrace();
-                parsedDate = new Date();
+                if (!(filter.getDt_devolucao_begin() != null)) {
+                    throw new Exception();
+                }
+                parsedDateBegin = df.parse(filter.getDt_devolucao_begin());
+                parsedDateBeginningOfDay.setTime(parsedDateBegin);
+            } catch (Exception e) {
+                parsedDateBegin = new Date();
+                parsedDateBeginningOfDay.setTime(parsedDateBegin);
+                parsedDateBeginningOfDay.set(Calendar.DAY_OF_MONTH, 1);
             }
-            Calendar parsedDateBeginningOfDay;
-            Calendar parsedDateEndOfDay;
             try {
-                parsedDateBeginningOfDay = new GregorianCalendar();
-                parsedDateBeginningOfDay.setTime(parsedDate);
+                if (!(filter.getDt_devolucao_end() != null)) {
+                    throw new Exception();
+                }
+                parsedDateEnd = df.parse(filter.getDt_devolucao_end());
+                if (!(parsedDateBegin.before(parsedDateEnd))) {
+                    throw new Exception();
+                }
+                parsedDateEndOfDay.setTime(parsedDateEnd);
+            } catch (Exception e) {
+                parsedDateEnd = parsedDateBegin;
+                parsedDateEndOfDay.setTime(parsedDateEnd);
+                parsedDateEndOfDay.set(
+                    Calendar.DAY_OF_MONTH,
+                    parsedDateEndOfDay.getActualMaximum(Calendar.DAY_OF_MONTH)
+                );
+            }
+            try {
                 parsedDateBeginningOfDay.set(Calendar.HOUR_OF_DAY, 0);
                 parsedDateBeginningOfDay.set(Calendar.MINUTE, 0);
                 parsedDateBeginningOfDay.set(Calendar.SECOND, 0);
 
-                parsedDateEndOfDay = new GregorianCalendar();
-                parsedDateEndOfDay.setTime(parsedDate);
                 parsedDateEndOfDay.set(Calendar.HOUR_OF_DAY, 23);
                 parsedDateEndOfDay.set(Calendar.MINUTE, 59);
                 parsedDateEndOfDay.set(Calendar.SECOND, 59);
@@ -188,6 +240,48 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
                 TemporalType.TIMESTAMP
             );
         }
+
+        // if (filter.getDt_devolucao() != null && !filter.getDt_devolucao()
+        //     .isBlank()) {
+        //     var df = new SimpleDateFormat("yyyy-MM-dd");
+        //     Date parsedDate;
+
+        //     try {
+        //         parsedDate = df.parse(filter.getDt_devolucao());
+        //     } catch (ParseException e) {
+        //         e.printStackTrace();
+        //         parsedDate = new Date();
+        //     }
+        //     Calendar parsedDateBeginningOfDay;
+        //     Calendar parsedDateEndOfDay;
+        //     try {
+        //         parsedDateBeginningOfDay = new GregorianCalendar();
+        //         parsedDateBeginningOfDay.setTime(parsedDate);
+        //         parsedDateBeginningOfDay.set(Calendar.HOUR_OF_DAY, 0);
+        //         parsedDateBeginningOfDay.set(Calendar.MINUTE, 0);
+        //         parsedDateBeginningOfDay.set(Calendar.SECOND, 0);
+
+        //         parsedDateEndOfDay = new GregorianCalendar();
+        //         parsedDateEndOfDay.setTime(parsedDate);
+        //         parsedDateEndOfDay.set(Calendar.HOUR_OF_DAY, 23);
+        //         parsedDateEndOfDay.set(Calendar.MINUTE, 59);
+        //         parsedDateEndOfDay.set(Calendar.SECOND, 59);
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //         throw e;
+        //     }
+
+        //     query.setParameter(
+        //         "dt_devolucao_begin",
+        //         parsedDateBeginningOfDay,
+        //         TemporalType.TIMESTAMP
+        //     );
+        //     query.setParameter(
+        //         "dt_devolucao_end",
+        //         parsedDateEndOfDay,
+        //         TemporalType.TIMESTAMP
+        //     );
+        // }
 
         System.out.println(query.toString());
         return query.getResultList();

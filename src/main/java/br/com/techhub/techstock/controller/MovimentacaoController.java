@@ -44,11 +44,7 @@ public class MovimentacaoController implements IController<MovimentacaoEspelho, 
         Response<List<MovimentacaoEspelho>> response = new Response<List<MovimentacaoEspelho>>();
 
         List<Movimentacao> list;
-        if (filtro.getUsuarioId() != null) {
-            list = movimentacaoService.filterBy(filtro);
-        } else {
-            list = movimentacaoService.findAll();
-        }
+        list = movimentacaoService.filterBy(filtro);
 
         List<MovimentacaoEspelho> listEspelho = new ArrayList<MovimentacaoEspelho>();
         for (Movimentacao movimentacao : list) {

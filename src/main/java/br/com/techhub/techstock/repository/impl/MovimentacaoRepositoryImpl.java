@@ -18,16 +18,16 @@ public class MovimentacaoRepositoryImpl implements RFilter<Movimentacao, Movimen
     public List<Movimentacao> filterBy(MovimentacaoFiltro filter) {
         String qlString = "";
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
             qlString += """
                 (
-                    lower(u.nome) like lower(:query) or
-                    lower(u.email) like lower(:query) or
-                    lower(ua.nome) like lower(:query) or
-                    lower(ua.email) like lower(:query) or
+                    lower(m.usuario.nome) like lower(:query) or
+                    lower(m.usuario.email) like lower(:query) or
+                    lower(m.usuarioAdm.nome) like lower(:query) or
+                    lower(m.usuarioAdm.email) like lower(:query) or
                     lower(t.observacao) like lower(:query) or
                     lower(e.tombamento) like lower(:query) or
                     lower(e.nome) like lower(:query) or
@@ -52,23 +52,23 @@ public class MovimentacaoRepositoryImpl implements RFilter<Movimentacao, Movimen
             qlString += "u.id = :usuarioAdmId";
         }
 
+        // inner join Usuario u
+        //     on m.usuario.id = u.id
+        // inner join Usuario ua
+        //     on m.usuarioAdm.id = u.id
         qlString = """
             select m from Movimentacao m
             inner join Ticket t
                 on m.ticket.id = t.id
             inner join Equipamento e
                 on t.equipamento.id = e.id
-            inner join Usuario u
-                on m.usuario.id = u.id
-            inner join Usuario ua
-                on m.usuarioAdm.id = u.id
-            """ + (qlString.isBlank() ? "" : "where " + qlString) + """
-            order by e.dt_create
+            """ + (qlString.isBlank() ? "" : "where " + qlString + " ") + """
+            order by e.dtCreate
             """;
 
         var query = entityManager.createQuery(qlString);
 
-        if (filter.getQuery() != null) {
+        if (filter.getQuery() != null && !filter.getQuery().isBlank()) {
             query.setParameter("query", "%" + filter.getQuery() + "%");
         }
 
