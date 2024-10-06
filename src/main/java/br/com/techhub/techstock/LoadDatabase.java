@@ -59,7 +59,6 @@ public class LoadDatabase {
             equipamento.setTombamento("2002OKLAKS");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Caixa de som legal");
-            equipamento.setDt_entrada(new Date());
             equipamento.setDt_saida(null);
             equipamento.setFabricante("Wolksvagem");
             equipamento.setModelo("Gol");
@@ -78,7 +77,6 @@ public class LoadDatabase {
             equipamento.setTombamento("2002OKLAKD");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Um slideshow que é show");
-            equipamento.setDt_entrada(new Date());
             equipamento.setDt_saida(null);
             equipamento.setFabricante("Yamaha");
             equipamento.setModelo("Fiat Uno");
@@ -105,9 +103,6 @@ public class LoadDatabase {
             equipamento.setTombamento("2002OKLAKG");
             equipamento.setCategoria(categoria);
             equipamento.setDescricao("Cadeira azul");
-            equipamento.setDt_entrada(
-                Date.from(Instant.now().minus(1, ChronoUnit.DAYS))
-            );
             equipamento.setDt_saida(new Date());
             equipamento.setFabricante("Ford");
             equipamento.setModelo("Ford ka");

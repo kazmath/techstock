@@ -23,16 +23,12 @@ public class EquipamentoEspelho implements IEspelho {
     @JsonFormat(pattern = "yyyy")
     private Date anoFabricacao;
 
-    private EquipamentoStatus status;
-
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-    private Date dtEntrada;
-
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date dtSaida;
 
-    private CategoriaEspelho categoria;
-    private UsuarioEspelho   usuarioComEquipamento;
+    private EquipamentoStatus status;
+    private CategoriaEspelho  categoria;
+    private UsuarioEspelho    usuarioComEquipamento;
 
     public EquipamentoEspelho(Equipamento equipamento) {
         this.id = equipamento.getId();
@@ -43,7 +39,6 @@ public class EquipamentoEspelho implements IEspelho {
         this.modelo = equipamento.getModelo();
         this.anoFabricacao = equipamento.getAno_fabricacao();
         this.status = equipamento.getStatus();
-        this.dtEntrada = equipamento.getDt_entrada();
         this.dtSaida = equipamento.getDt_saida();
         this.categoria = new CategoriaEspelho(equipamento.getCategoria());
         if (equipamento.getUsuarioComEquipamento() != null) {

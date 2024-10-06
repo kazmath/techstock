@@ -64,10 +64,6 @@ public class Equipamento extends BaseModel {
     private EquipamentoStatus status = EquipamentoStatus.DISPONIVEL;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date dt_entrada;
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = true)
     private Date dt_saida;
 
@@ -99,8 +95,9 @@ public class Equipamento extends BaseModel {
         this.fabricante = request.getFabricante();
         this.modelo = request.getModelo();
         this.ano_fabricacao = request.getAno_fabricacao();
-        this.status = request.getStatus();
-        this.dt_entrada = request.getDt_entrada();
+        if (request.getStatus() != null) {
+            this.status = request.getStatus();
+        }
         this.dt_saida = request.getDt_saida();
         this.usuarioComEquipamento = request.getUsuarioComEquipamento();
         this.categoria = request.getCategoria();

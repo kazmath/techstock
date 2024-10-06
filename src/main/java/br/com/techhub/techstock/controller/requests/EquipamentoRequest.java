@@ -30,28 +30,17 @@ public class EquipamentoRequest implements IRequest {
     private String nome;
 
     @NotBlank
-    private String descricao;
-
-    @NotBlank
     private String fabricante;
 
-    @NotBlank
-    private String modelo;
-
-    @NotNull
     @JsonFormat(pattern = "yyyy")
     private Date ano_fabricacao;
 
-    @NotBlank
-    private EquipamentoStatus status;
-
-    @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dt_entrada;
-
-    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dt_saida;
+
+    private String            descricao;
+    private String            modelo;
+    private EquipamentoStatus status;
 
     private Usuario UsuarioComEquipamento;
 
