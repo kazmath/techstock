@@ -6,9 +6,9 @@ import lombok.Getter;
 
 @Getter
 public enum TicketStatus {
-    APROVADO('A', "Aprovado", "#6AA554"),
-    DESAPROVADO('D', "Desaprovado", "#E6B128"),
-    PROCESSANDO('P', "Processando", "#DF3F3F");
+    APROVADO('S', "Reservado", "#6AA554"),
+    DESAPROVADO('N', "Recusado", "#E6B128"),
+    PROCESSANDO('P', "Aguardando", "#DF3F3F");
 
     @JsonValue
     private char codigo;
