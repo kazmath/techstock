@@ -97,4 +97,9 @@ public class ViewHandler {
         return handleViewRequest("log.html");
     }
 
+    @GetMapping("/home")
+    public ResponseEntity<String> home() {
+        return handleViewRequest("home.html");
+    }
+
 }
