@@ -120,7 +120,7 @@ public class LoadDatabase {
                 Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
             );
             ticket.setEquipamento(equipamento);
-            ticket.setStatus(TicketStatus.PROCESSANDO);
+            ticket.setStatus(TicketStatus.AGUARDANDO);
             ticket.setUsuario(usuario);
             ticketService.save(ticket);
 
@@ -139,7 +139,7 @@ public class LoadDatabase {
                 Date.from(Instant.now().plus(10, ChronoUnit.DAYS))
             );
             ticket.setEquipamento(equipamento);
-            ticket.setStatus(TicketStatus.APROVADO);
+            ticket.setStatus(TicketStatus.RESERVADO);
             ticket.setObservacao(
                 "Dolor tempor consectetur ex aliqua aliqua ea reprehenderit irure pariatur excepteur labore. Ad dolore in laboris in culpa nulla reprehenderit. Sunt pariatur do pariatur ex nostrud. Id occaecat qui commodo enim irure laboris proident reprehenderit magna."
             );

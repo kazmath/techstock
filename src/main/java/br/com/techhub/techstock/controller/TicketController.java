@@ -55,7 +55,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     TicketRequest entity, BindingResult result) {
         Response<Long> response = new Response<>();
 
-        entity.setStatus(TicketStatus.PROCESSANDO);
+        entity.setStatus(TicketStatus.AGUARDANDO);
 
         var obj = ticketService.save(new Ticket(entity));
         response.setData(obj.getId());
