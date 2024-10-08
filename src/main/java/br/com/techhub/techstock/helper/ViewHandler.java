@@ -76,6 +76,11 @@ public class ViewHandler {
         return handleViewRequest("cadastro_equipamentos.html");
     }
 
+    @GetMapping("/equipamento/{id}")
+    public ResponseEntity<String> equipamento_alterar(Long id) {
+        return handleViewRequest("alteracao_equipamentos.html");
+    }
+
     @GetMapping("/ticket")
     public ResponseEntity<String> tickets() {
         return handleViewRequest("ticket.html");
@@ -86,7 +91,7 @@ public class ViewHandler {
     // public ResponseEntity<String> tickets() {
     //     return handleViewRequest("tickets.html");
     // }
-    
+
     @GetMapping("/ticket/criar")
     public ResponseEntity<String> ticket_criar() {
         return handleViewRequest("criarticket.html");
