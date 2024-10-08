@@ -66,6 +66,11 @@ public class ViewHandler {
         return handleViewRequest("cadastro_user.html");
     }
 
+    @GetMapping("/usuario/{id}")
+    public ResponseEntity<String> usuario_alterar(Long id) {
+        return handleViewRequest("alteracao_usuario.html");
+    }
+
     @GetMapping("/equipamento")
     public ResponseEntity<String> equipamento() {
         return handleViewRequest("equipamentos.html");
