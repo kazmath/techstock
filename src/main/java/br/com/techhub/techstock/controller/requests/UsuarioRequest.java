@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.techhub.techstock.model.Setor;
+import br.com.techhub.techstock.model.enums.UsuarioTipo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,11 +33,11 @@ public class UsuarioRequest implements IRequest {
     @NotBlank
     private String senha;
 
-    private Boolean admin;
+    @NotNull
+    private UsuarioTipo usuarioTipo;
 
     @NotNull
     @JsonProperty("setorId")
     private Setor setor;
-
 
 }

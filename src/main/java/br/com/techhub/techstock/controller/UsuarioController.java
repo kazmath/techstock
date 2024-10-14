@@ -3,9 +3,11 @@ package br.com.techhub.techstock.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,22 +18,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.techhub.techstock.controller.espelhos.AuthEspelho;
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.espelhos.UsuarioEspelho;
 import br.com.techhub.techstock.controller.filters.UsuarioFiltro;
-import br.com.techhub.techstock.controller.filters.UsuarioFiltro;
+import br.com.techhub.techstock.controller.requests.CredentialRequest;
 import br.com.techhub.techstock.controller.requests.UsuarioRequest;
 import br.com.techhub.techstock.model.Usuario;
+import br.com.techhub.techstock.security.TokenService;
+import br.com.techhub.techstock.security.UserSS;
 import br.com.techhub.techstock.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 
 @RestController
 @RequestMapping("/api/usuario")
+@SecurityRequirement(name = "bearerAuth")
 public class UsuarioController implements IController<UsuarioEspelho, UsuarioRequest, UsuarioFiltro> {
+    private UsuarioService              usuarioService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService          tokenService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    /**
+     * @param usuarioService
+     * @param authenticationManager
+     * @param tokenService
+     */
+    public UsuarioController(
+        UsuarioService usuarioService,
+        AuthenticationManager authenticationManager,
+        TokenService tokenService
+    ) {
+        this.usuarioService = usuarioService;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
+    }
 
     @GetMapping
     public ResponseEntity<Response<List<UsuarioEspelho>>> readAll(
@@ -114,4 +136,23 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
+
+
+    @PostMapping("/login")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<Response<AuthEspelho>> login(@RequestBody @Valid
+    CredentialRequest credentialRequest) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(
+            credentialRequest.getEmail(),
+            credentialRequest.getPassword()
+        );
+        var response = new Response<AuthEspelho>();
+
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+        var token = tokenService.generateToken((UserSS) auth.getPrincipal());
+
+        response.setData(new AuthEspelho(token));
+        return ResponseEntity.ok(response);
+    }
+
 }

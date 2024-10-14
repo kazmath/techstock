@@ -1,4 +1,4 @@
-package br.com.techhub.techstock;
+package br.com.techhub.techstock.helper;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +18,7 @@ import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import br.com.techhub.techstock.model.enums.TicketStatus;
+import br.com.techhub.techstock.model.enums.UsuarioTipo;
 import br.com.techhub.techstock.service.CategoriaService;
 import br.com.techhub.techstock.service.EquipamentoService;
 import br.com.techhub.techstock.service.MovimentacaoService;
@@ -90,12 +91,15 @@ public class LoadDatabase {
             setorService.save(setor);
 
             var usuario = new Usuario();
-            usuario.setAdmin(false);
             usuario.setEmail("daniel@gmail.com");
             usuario.setCodigo("202001252356");
             usuario.setNome("Daniel");
+            // String encryptedPassword = new BCryptPasswordEncoder().encode(
+            //     "123456"
+            // );
             usuario.setSenha("123456");
             usuario.setSetor(setor);
+            usuario.setUsuarioTipo(UsuarioTipo.ADMIN);
             usuarioService.save(usuario);
 
             equipamento = new Equipamento();
@@ -153,7 +157,7 @@ public class LoadDatabase {
             movimentacao.setUsuario(usuario);
 
             usuario = new Usuario();
-            usuario.setAdmin(true);
+            usuario.setUsuarioTipo(UsuarioTipo.ADMIN);
             usuario.setEmail("matheus@gmail.com");
             usuario.setCodigo("202001252426");
             usuario.setNome("Matheus");

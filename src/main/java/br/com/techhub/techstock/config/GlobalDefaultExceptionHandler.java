@@ -14,10 +14,21 @@ import br.com.techhub.techstock.controller.espelhos.Response;
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
+    // TODO: Tratar erros de autenticação
+    // @ExceptionHandler(value = {
+    //     AuthorizationDeniedException.class
+    // })
+    // protected ResponseEntity<Object> handleAccessDeniedConflict(
+    //     RuntimeException exception,
+    //     WebRequest request
+    // ) {
+    //     return ResponseEntity.status(HttpStatus.FORBIDDEN).body("");
+    // }
+
     @ExceptionHandler(value = {
         Exception.class
     })
-    protected ResponseEntity<Object> handleConflict(
+    protected ResponseEntity<Object> handleGenericConflict(
         RuntimeException exception,
         WebRequest request
     ) {

@@ -52,7 +52,7 @@ public class Ticket extends BaseModel {
     private String observacao;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private TicketStatus status = TicketStatus.AGUARDANDO;
 
     @ManyToOne(fetch = FetchType.EAGER)
