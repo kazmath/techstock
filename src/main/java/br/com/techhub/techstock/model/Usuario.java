@@ -48,7 +48,7 @@ public class Usuario extends BaseModel {
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(name = "senha_hash", length = 50, nullable = false)
+    @Column(name = "senha_hash", nullable = false)
     private String senha;
 
     @Column(nullable = false)
