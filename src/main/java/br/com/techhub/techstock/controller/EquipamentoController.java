@@ -2,6 +2,7 @@ package br.com.techhub.techstock.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import br.com.techhub.techstock.controller.espelhos.EquipamentoStatusEnumEspelho
 import br.com.techhub.techstock.controller.espelhos.Response;
 import br.com.techhub.techstock.controller.filters.EquipamentoFiltro;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
+import br.com.techhub.techstock.controller.requests.EquipamentoStatusRequest;
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.service.EquipamentoService;
@@ -81,6 +83,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         response.setData(new EquipamentoEspelho(obj.get()));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Response<Long>> update(@PathVariable
@@ -143,4 +146,52 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @PutMapping("/change_status")
+    public ResponseEntity<Response<Long>> updateStatus(@Valid @RequestBody
+    EquipamentoStatusRequest request) {
+        Response<Long> response = new Response<>();
+        Optional<Equipamento> entityOp = equipamentoService.findById(
+            request.id()
+        );
+        if (!entityOp.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Equipamento com o id %s não foi encontrado",
+                        request.id()
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        var entity = entityOp.get();
+
+        EquipamentoStatus status = null;
+
+        for (EquipamentoStatus currStatus : EquipamentoStatus.values()) {
+            if (currStatus.getCodigo() == request.statusId()) {
+                status = currStatus;
+                break;
+            }
+        }
+
+        if (status == null) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Status com o id %s não existe",
+                        request.statusId()
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        entity.setStatus(status);
+
+        equipamentoService.save(entity);
+        response.setData(request.id());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
 }

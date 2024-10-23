@@ -22,8 +22,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import br.com.techhub.techstock.model.enums.UsuarioTipo;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -59,15 +57,19 @@ public class SecurityConfig {
                         (a, o) -> new AuthorizationDecision(can_access_swagger)
                     )
 
-                    .requestMatchers(HttpMethod.GET, "/**")
+                    .requestMatchers(HttpMethod.GET, "/techstock/**")
+                    .permitAll()
+
+                    .requestMatchers(HttpMethod.GET, "/assets/**")
                     .permitAll()
 
                     .requestMatchers(HttpMethod.POST, "/api/usuario/login")
                     .permitAll()
 
+
                     // TODO: Rever permissões
                     .requestMatchers("/api/**")
-                    .hasRole(UsuarioTipo.ADMIN.toString())
+                    .permitAll()
 
                     .anyRequest()
                     .authenticated()

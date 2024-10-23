@@ -6,16 +6,12 @@ import java.util.Scanner;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
 @RestController
-@RequestMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
-@SecurityRequirement(name = "bearerAuth")
+@RequestMapping(value = "/techstock", produces = MediaType.TEXT_HTML_VALUE)
 public class ViewHandler {
 
     private String staticDir = System.getProperty("user.dir") + File.separator
@@ -51,51 +47,51 @@ public class ViewHandler {
         return handleViewRequest("index.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/dashboard")
     public ResponseEntity<String> dashboard() {
+        // TODO: Autenticação
         return handleViewRequest("adm_inicial.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/usuario")
     public ResponseEntity<String> usuario() {
+        // TODO: Autenticação
         return handleViewRequest("usuario.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/usuario/cadastro")
     public ResponseEntity<String> usuario_cadastro() {
+        // TODO: Autenticação
         return handleViewRequest("cadastro_user.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/usuario/editar")
     public ResponseEntity<String> usuario_editar() {
+        // TODO: Autenticação
         return handleViewRequest("cadastro_user.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/usuario/{id}")
     public ResponseEntity<String> usuario_alterar(Long id) {
+        // TODO: Autenticação
         return handleViewRequest("alteracao_usuario.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/equipamento")
     public ResponseEntity<String> equipamento() {
+        // TODO: Autenticação
         return handleViewRequest("equipamentos.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/equipamento/cadastro")
     public ResponseEntity<String> equipamento_cadastro() {
+        // TODO: Autenticação
         return handleViewRequest("cadastro_equipamentos.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/equipamento/{id}")
     public ResponseEntity<String> equipamento_alterar(Long id) {
+        // TODO: Autenticação
         return handleViewRequest("alteracao_equipamentos.html");
     }
 
@@ -110,9 +106,9 @@ public class ViewHandler {
         return handleViewRequest("criarticket.html");
     }
 
-    @PreAuthorize(Constants.SECURITY_ROLE_ADMIN)
     @GetMapping("/movimentacao")
     public ResponseEntity<String> movimentacao() {
+        // TODO: Autenticação
         return handleViewRequest("log.html");
     }
 
