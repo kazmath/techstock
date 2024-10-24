@@ -63,13 +63,16 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/assets/**")
                     .permitAll()
 
+                    .requestMatchers(HttpMethod.GET, "/")
+                    .permitAll()
+
                     .requestMatchers(HttpMethod.POST, "/api/usuario/login")
                     .permitAll()
 
 
                     // TODO: Rever permissões
-                    .requestMatchers("/api/**")
-                    .permitAll()
+                    // .requestMatchers("/api/**")
+                    // .permitAll()
 
                     .anyRequest()
                     .authenticated()
