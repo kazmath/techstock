@@ -63,7 +63,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/assets/**")
                     .permitAll()
 
-                    .requestMatchers(HttpMethod.GET, "/")
+                    .requestMatchers(HttpMethod.GET, "/*")
                     .permitAll()
 
                     .requestMatchers(HttpMethod.POST, "/api/usuario/login")
