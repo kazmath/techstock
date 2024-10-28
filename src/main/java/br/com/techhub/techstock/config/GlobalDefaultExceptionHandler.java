@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import br.com.techhub.techstock.controller.espelhos.Response;
 
+
 @ControllerAdvice
 public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -49,10 +50,19 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         WebRequest request
     ) {
 
+        return staticHandleNotFound(ex, headers, handlerMapping);
+
+    }
+
+    @SuppressWarnings("null")
+    public static ResponseEntity<Object> staticHandleNotFound(
+        NoHandlerFoundException ex,
+        HttpHeaders headers,
+        RequestMappingHandlerMapping handlerMapping
+    ) {
         if (ex.getRequestURL().startsWith("/techstock")) {
             return ResponseEntity.status(404).build();
         }
-
         Set<RequestMappingInfo> rmSet = handlerMapping.getHandlerMethods()
             .keySet();
         for (RequestMappingInfo rm : rmSet) {
@@ -79,7 +89,6 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         }
 
         return ResponseEntity.status(404).build();
-
     }
 
     @ExceptionHandler
