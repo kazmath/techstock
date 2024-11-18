@@ -1,11 +1,11 @@
 spring:
     # mvc:
-    #     static-path-pattern:
+    #     static-path-pattern: /techstock/**
     web:
         resources:
-            add-mappings: false
+            add-mappings: true
             # static-locations:
-            #     - classpath:/static/website/assets
+            #     - classpath:/static/techstock
     profiles:
         active: dev
     application:

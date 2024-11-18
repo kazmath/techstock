@@ -24,10 +24,12 @@ import br.com.techhub.techstock.controller.requests.TicketRequest;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.enums.TicketStatus;
 import br.com.techhub.techstock.service.TicketService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/ticket")
+@SecurityRequirement(name = "bearerAuth")
 public class TicketController implements IController<TicketEspelho, TicketRequest, TicketFiltro> {
 
     @Autowired

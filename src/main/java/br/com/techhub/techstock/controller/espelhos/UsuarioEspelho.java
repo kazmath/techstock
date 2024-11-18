@@ -13,7 +13,7 @@ public class UsuarioEspelho implements IEspelho {
     private String      codigo;
     private String      nome;
     private String      email;
-    private String      senha;
+    // private String      senha;
     private UsuarioTipo usuarioTipo;
     private Long        setorId;
 
@@ -22,7 +22,7 @@ public class UsuarioEspelho implements IEspelho {
         this.codigo = usuario.getCodigo();
         this.nome = usuario.getNome();
         this.email = usuario.getEmail();
-        this.senha = usuario.getSenha();
+        // this.senha = usuario.getSenha();
         this.usuarioTipo = usuario.getUsuarioTipo();
         this.setorId = usuario.getSetor().getId();
     }

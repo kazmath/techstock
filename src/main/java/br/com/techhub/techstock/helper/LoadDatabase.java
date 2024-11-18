@@ -99,7 +99,7 @@ public class LoadDatabase {
             // );
             usuario.setSenha("123456");
             usuario.setSetor(setor);
-            usuario.setUsuarioTipo(UsuarioTipo.ADMIN);
+            usuario.setUsuarioTipo(UsuarioTipo.USER);
             usuarioService.save(usuario);
 
             equipamento = new Equipamento();

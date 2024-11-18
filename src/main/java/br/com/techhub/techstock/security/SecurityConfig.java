@@ -57,6 +57,8 @@ public class SecurityConfig {
                         (a, o) -> new AuthorizationDecision(can_access_swagger)
                     )
 
+                    .requestMatchers(HttpMethod.GET, "/techstock")
+                    .permitAll()
                     .requestMatchers(HttpMethod.GET, "/techstock/**")
                     .permitAll()
 

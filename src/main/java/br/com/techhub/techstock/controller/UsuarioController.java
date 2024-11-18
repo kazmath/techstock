@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -141,17 +142,42 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
     public ResponseEntity<Response<AuthEspelho>> login(@RequestBody @Valid
-    CredentialRequest credentialRequest) {
+    CredentialRequest credentialRequest, BindingResult result) {
+        var response = new Response<AuthEspelho>();
+
+        if (result.hasErrors()) {
+            for (var error : result.getAllErrors()) {
+                response.getErrors().add(error.getDefaultMessage());
+            }
+
+            return ResponseEntity.badRequest().body(response);
+        }
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(
             credentialRequest.getEmail(),
             credentialRequest.getPassword()
         );
-        var response = new Response<AuthEspelho>();
 
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        var token = tokenService.generateToken((UserSS) auth.getPrincipal());
+        UserSS principal = (UserSS) auth.getPrincipal();
+        var token = tokenService.generateToken(principal);
 
-        response.setData(new AuthEspelho(token));
+        ArrayList<String> authorities = new ArrayList();
+        for (GrantedAuthority authority : principal.getAuthorities()) {
+            authorities.add(authority.getAuthority());
+        }
+
+        var usuario = usuarioService.findByEmail(principal.getUsername());
+
+        if (!usuario.isPresent()) {
+            response.getErrors().add("Usuário não encontrado");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        var email = usuario.get().getEmail();
+        var codigo = usuario.get().getCodigo();
+
+        response.setData(new AuthEspelho(token, email, codigo, authorities));
         return ResponseEntity.ok(response);
     }
 

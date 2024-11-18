@@ -1,3 +1,10 @@
 package br.com.techhub.techstock.controller.espelhos;
 
-public record AuthEspelho(String token) implements IEspelho {}
+import java.util.List;
+
+public record AuthEspelho(
+    String token,
+    String email,
+    String codigo,
+    List<String> permissions
+) implements IEspelho {}

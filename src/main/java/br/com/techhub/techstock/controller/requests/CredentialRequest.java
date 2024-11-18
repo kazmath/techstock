@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 public class CredentialRequest implements IRequest {
 
-    @Email
+    @Email(message = "Email inválido")
     @NotBlank
     private String email;
 

@@ -1,3 +1,5 @@
 {
     "java.format.settings.url": "java-formatter.xml",
+    "terminal.integrated.fontSize": 10,
+    "terminal.integrated.defaultLocation": "editor",
 }
