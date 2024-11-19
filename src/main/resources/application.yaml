@@ -3,7 +3,7 @@ spring:
     #     static-path-pattern: /techstock/**
     web:
         resources:
-            add-mappings: true
+            add-mappings: false
             # static-locations:
             #     - classpath:/static/techstock
     profiles:
