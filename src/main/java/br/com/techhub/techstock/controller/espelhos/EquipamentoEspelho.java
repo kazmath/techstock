@@ -27,8 +27,8 @@ public class EquipamentoEspelho implements IEspelho {
     private Date dtSaida;
 
     private EquipamentoStatus status;
-    private CategoriaEspelho  categoria;
-    private UsuarioEspelho    usuarioComEquipamento;
+    private Long              categoriaId;
+    private Long              usuarioComEquipamentoId;
 
     public EquipamentoEspelho(Equipamento equipamento) {
         this.id = equipamento.getId();
@@ -40,11 +40,12 @@ public class EquipamentoEspelho implements IEspelho {
         this.anoFabricacao = equipamento.getAno_fabricacao();
         this.status = equipamento.getStatus();
         this.dtSaida = equipamento.getDt_saida();
-        this.categoria = new CategoriaEspelho(equipamento.getCategoria());
+        this.categoriaId = new CategoriaEspelho(equipamento.getCategoria())
+            .getId();
         if (equipamento.getUsuarioComEquipamento() != null) {
-            this.usuarioComEquipamento = new UsuarioEspelho(
+            this.usuarioComEquipamentoId = new UsuarioEspelho(
                 equipamento.getUsuarioComEquipamento()
-            );
+            ).getId();
         }
     }
 
