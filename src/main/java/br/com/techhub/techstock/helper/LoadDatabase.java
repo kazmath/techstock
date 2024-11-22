@@ -120,9 +120,6 @@ public class LoadDatabase {
             ticket.setDt_reserva(
                 Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
             );
-            ticket.setDt_devolucao(
-                Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
-            );
             ticket.setEquipamento(equipamento);
             ticket.setStatus(TicketStatus.AGUARDANDO);
             ticket.setUsuario(usuario);
@@ -138,9 +135,6 @@ public class LoadDatabase {
             ticket = new Ticket();
             ticket.setDt_reserva(
                 Date.from(Instant.now().plus(2, ChronoUnit.DAYS))
-            );
-            ticket.setDt_devolucao(
-                Date.from(Instant.now().plus(10, ChronoUnit.DAYS))
             );
             ticket.setEquipamento(equipamento);
             ticket.setStatus(TicketStatus.RESERVADO);

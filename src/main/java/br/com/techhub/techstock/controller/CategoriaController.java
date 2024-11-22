@@ -22,10 +22,12 @@ import br.com.techhub.techstock.controller.filters.IFilter;
 import br.com.techhub.techstock.controller.requests.CategoriaRequest;
 import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.service.CategoriaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/categoria")
+@SecurityRequirement(name = "bearerAuth")
 public class CategoriaController implements IController<CategoriaEspelho, CategoriaRequest, IFilter> {
 
     @Autowired

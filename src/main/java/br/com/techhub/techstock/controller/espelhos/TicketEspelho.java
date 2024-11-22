@@ -33,7 +33,6 @@ public class TicketEspelho implements IEspelho {
     public TicketEspelho(Ticket ticket) {
         this.id = ticket.getId();
         this.dt_reserva = ticket.getDt_reserva();
-        this.dt_devolucao = ticket.getDt_devolucao();
         this.observacao = ticket.getObservacao();
         this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();
@@ -45,7 +44,6 @@ public class TicketEspelho implements IEspelho {
     public TicketEspelho(Ticket ticket, boolean includeUsuario) {
         this.id = ticket.getId();
         this.dt_devolucao = ticket.getDt_reserva();
-        this.dt_devolucao = ticket.getDt_devolucao();
         this.observacao = ticket.getObservacao();
         this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();

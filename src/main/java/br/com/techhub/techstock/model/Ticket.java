@@ -44,10 +44,6 @@ public class Ticket extends BaseModel {
     @Column(nullable = false)
     private Date dt_reserva;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date dt_devolucao;
-
     @Column(nullable = true, length = 255)
     private String observacao;
 
@@ -78,7 +74,6 @@ public class Ticket extends BaseModel {
         super();
         this.id = request.getId();
         this.dt_reserva = request.getDt_reserva();
-        this.dt_devolucao = request.getDt_devolucao();
         this.observacao = request.getObservacao();
         this.status = request.getStatus();
         this.usuario = request.getUsuario();

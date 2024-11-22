@@ -2,6 +2,8 @@ package br.com.techhub.techstock.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +24,14 @@ import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
 import br.com.techhub.techstock.controller.espelhos.TicketStatusEnumEspelho;
 import br.com.techhub.techstock.controller.filters.TicketFiltro;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
+import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.Ticket;
+import br.com.techhub.techstock.model.Usuario;
+import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.model.enums.TicketStatus;
+import br.com.techhub.techstock.security.TokenService;
 import br.com.techhub.techstock.service.TicketService;
+import br.com.techhub.techstock.service.UsuarioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
@@ -34,6 +42,12 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private TokenService tokenService;
 
     @GetMapping
     public ResponseEntity<Response<List<TicketEspelho>>> readAll(@Valid
@@ -53,6 +67,29 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     }
 
     @PostMapping
+    public ResponseEntity<Response<Long>> createWithHeaders(@Valid @RequestBody
+    TicketRequest entity, BindingResult result, @RequestHeader
+    Map<String, String> headers) {
+        Response<Long> response = new Response<>();
+
+        entity.setStatus(TicketStatus.AGUARDANDO);
+
+        if (entity.getUsuario() == null) {
+            var email = tokenService.validateToken(
+                headers.get("authorization")
+                    .toString()
+                    .substring("Bearer ".length())
+            );
+            Optional<Usuario> usuario = usuarioService.findByEmail(email);
+            if (!usuario.isPresent()) {
+                response.getErrors().add("Usuário inválido");
+                return ResponseEntity.badRequest().body(response);
+            }
+            entity.setUsuario(usuario.get());
+        }
+        return create(entity, result);
+    }
+
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     TicketRequest entity, BindingResult result) {
         Response<Long> response = new Response<>();
@@ -86,7 +123,8 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     Long id, @Valid @RequestBody
     TicketRequest request, BindingResult result) {
         Response<Long> response = new Response<>();
-        if (!ticketService.findById(id).isPresent()) {
+        Optional<Ticket> ticketObj = ticketService.findById(id);
+        if (!ticketObj.isPresent()) {
             response.getErrors()
                 .add(
                     String.format("Ticket com o id %s não foi encontrada", id)
@@ -96,6 +134,48 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
         request.setId(id);
         ticketService.save(new Ticket(request));
+        response.setData(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/editar_status/{id}")
+    public ResponseEntity<Response<Long>> updateStatus(@PathVariable
+    Long id, @Valid @RequestBody
+    String status, BindingResult result) {
+        Response<Long> response = new Response<>();
+
+        if (status.length() != 1) {
+            response.getErrors().add("Código de status inválido");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        }
+        char statusChar = status.charAt(0);
+
+        Optional<Ticket> ticketObj = ticketService.findById(id);
+        if (!ticketObj.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format("Ticket com o id %s não foi encontrada", id)
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        Ticket entity = ticketObj.get();
+
+        TicketStatus currStatus = null;
+        for (TicketStatus statusObj : TicketStatus.values()) {
+            if (statusObj.getCodigo() == statusChar) {
+                currStatus = statusObj;
+                break;
+            }
+        }
+        if (currStatus == null) {
+            response.getErrors()
+                .add(String.format("Status de código '%s' inválido", status));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        entity.setStatus(currStatus);
+
+        ticketService.save(entity);
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

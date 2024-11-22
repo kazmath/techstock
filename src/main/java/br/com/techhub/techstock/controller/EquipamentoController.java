@@ -26,10 +26,12 @@ import br.com.techhub.techstock.controller.requests.EquipamentoStatusRequest;
 import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.service.EquipamentoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/equipamento")
+@SecurityRequirement(name = "bearerAuth")
 public class EquipamentoController implements IController<EquipamentoEspelho, EquipamentoRequest, EquipamentoFiltro> {
 
     @Autowired
@@ -103,6 +105,51 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
         request.setId(id);
         equipamentoService.save(new Equipamento(request));
+        response.setData(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping("/editar_status/{id}")
+    public ResponseEntity<Response<Long>> updateStatus(@PathVariable
+    Long id, @Valid @RequestBody
+    String status, BindingResult result) {
+        Response<Long> response = new Response<>();
+
+        if (status.length() != 1) {
+            response.getErrors().add("Código de status inválido");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        }
+        char statusChar = status.charAt(0);
+
+        Optional<Equipamento> equipamentoObj = equipamentoService.findById(id);
+        if (!equipamentoObj.isPresent()) {
+            response.getErrors()
+                .add(
+                    String.format(
+                        "Equipamento com o id %s não foi encontrado",
+                        id
+                    )
+                );
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        Equipamento entity = equipamentoObj.get();
+
+        EquipamentoStatus currStatus = null;
+        for (EquipamentoStatus statusObj : EquipamentoStatus.values()) {
+            if (statusObj.getCodigo() == statusChar) {
+                currStatus = statusObj;
+                break;
+            }
+        }
+        if (currStatus == null) {
+            response.getErrors()
+                .add(String.format("Status de código '%s' inválido", status));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        entity.setStatus(currStatus);
+
+        equipamentoService.save(entity);
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -52,7 +52,7 @@ public class SecurityConfig {
                         HttpMethod.GET,
                         "/swagger-ui/**",
                         "/swagger-ui.html",
-                        "/api-docs/**"
+                            "/api-docs/**"
                     )
                     .access(
                         (a, o) -> new AuthorizationDecision(can_access_swagger)
@@ -63,11 +63,11 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/techstock/**")
                     .permitAll()
 
-                    .requestMatchers(HttpMethod.GET, "/assets/**")
-                    .permitAll()
+                    // .requestMatchers(HttpMethod.GET, "/assets/**")
+                    // .permitAll()
 
-                    .requestMatchers(HttpMethod.GET, "/*")
-                    .permitAll()
+                    // .requestMatchers(HttpMethod.GET, "/*")
+                    // .permitAll()
 
                     .requestMatchers(HttpMethod.POST, "/api/usuario/login")
                     .permitAll()
