@@ -176,8 +176,11 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
 
         var email = usuario.get().getEmail();
         var codigo = usuario.get().getCodigo();
+        var nome = usuario.get().getNome();
 
-        response.setData(new AuthEspelho(token, email, codigo, authorities));
+        response.setData(
+            new AuthEspelho(token, nome, email, codigo, authorities)
+        );
         return ResponseEntity.ok(response);
     }
 

@@ -22,6 +22,7 @@ public class MovimentacaoRepositoryImpl implements RFilter<Movimentacao, Movimen
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
+            // TODO: Colocar para filtrar de forma exata pelo ID do ticket
             qlString += """
                 (
                     lower(m.usuario.nome) like lower(:query) or

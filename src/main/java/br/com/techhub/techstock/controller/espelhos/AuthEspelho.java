@@ -4,7 +4,8 @@ import java.util.List;
 
 public record AuthEspelho(
     String token,
-    String email,
+    String nome,
+        String email,
     String codigo,
     List<String> permissions
 ) implements IEspelho {}
