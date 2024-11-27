@@ -1,17 +1,14 @@
 package br.com.techhub.techstock.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import lombok.Getter;
 
 @Getter
 public enum TicketStatus {
     RESERVADO('S', "Reservado", "#6AA554"),
-    RECUSADO('N', "Recusado", "#E6B128"),
-    AGUARDANDO('P', "Aguardando", "#DF3F3F"),
-    FINALIZADO('F', "Finalizado", "#DF3F3F");
+    RECUSADO('N', "Recusado", "#DF3F3F"),
+    AGUARDANDO('P', "Aguardando", "#E6B128"),
+    FINALIZADO('F', "Finalizado", "#666666");
 
-    @JsonValue
     private char codigo;
 
     private String descricao;

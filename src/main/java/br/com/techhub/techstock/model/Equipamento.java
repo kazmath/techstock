@@ -7,10 +7,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -68,7 +70,10 @@ public class Equipamento extends BaseModel {
     private Date dt_saida;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = true)
+    @JoinColumn(name = "id_usuario",
+        nullable = true,
+        foreignKey = @ForeignKey(name = "fk_equipamento_usuario",
+            value = ConstraintMode.CONSTRAINT))
     private Usuario usuarioComEquipamento;
 
     @ManyToOne(fetch = FetchType.LAZY)

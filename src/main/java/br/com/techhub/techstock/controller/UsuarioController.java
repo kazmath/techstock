@@ -2,7 +2,9 @@ package br.com.techhub.techstock.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,6 +79,10 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     UsuarioRequest entity, BindingResult result) {
         Response<Long> response = new Response<>();
 
+        if (entity.getSenha() == null || entity.getSenha().isEmpty()) {
+            throw new ServiceException("Senha inválida");
+        }
+
         var obj = usuarioService.save(new Usuario(entity));
         response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -104,7 +110,8 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
     Long id, @Valid @RequestBody
     UsuarioRequest request, BindingResult result) {
         Response<Long> response = new Response<>();
-        if (!usuarioService.findById(id).isPresent()) {
+        Optional<Usuario> usuario = usuarioService.findById(id);
+        if (!usuario.isPresent()) {
             response.getErrors()
                 .add(
                     String.format("Usuario com o id %s não foi encontrada", id)
@@ -112,8 +119,28 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        request.setId(id);
-        usuarioService.save(new Usuario(request));
+        var usuarioFound = usuario.get();
+
+        // usuarioFound.setId(id);
+        if (request.getNome() != null && !request.getNome().isBlank()) {
+            usuarioFound.setNome(request.getNome());
+        }
+        if (request.getCodigo() != null && !request.getCodigo().isBlank()) {
+            usuarioFound.setCodigo(request.getCodigo());
+        }
+        if (request.getSetor() != null) {
+            usuarioFound.setSetor(request.getSetor());
+        }
+        if (request.getEmail() != null && !request.getEmail().isBlank()) {
+            usuarioFound.setEmail(request.getEmail());
+        }
+        if (request.getSenha() != null && !request.getSenha().isBlank()) {
+            usuarioFound.setSenha(request.getSenha());
+        }
+        if (request.getUsuarioTipo() != null) {
+            usuarioFound.setUsuarioTipo(request.getUsuarioTipo());
+        }
+        usuarioService.save(usuarioFound);
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

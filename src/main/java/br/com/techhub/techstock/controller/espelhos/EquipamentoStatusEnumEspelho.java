@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 public class EquipamentoStatusEnumEspelho implements IEspelho {
 
-    private char   codigo;
+    private String codigo;
     private String descricao;
     private String corHex;
 
     public EquipamentoStatusEnumEspelho(EquipamentoStatus equipamentoStatus) {
-        this.codigo = equipamentoStatus.getCodigo();
+        this.codigo = equipamentoStatus.toString();
         this.descricao = equipamentoStatus.getDescricao();
         this.corHex = equipamentoStatus.getCorHex();
     }

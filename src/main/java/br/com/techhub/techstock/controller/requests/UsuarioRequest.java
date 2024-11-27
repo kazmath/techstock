@@ -30,7 +30,7 @@ public class UsuarioRequest implements IRequest {
     @Email
     private String email;
 
-    @NotBlank
+    // @NotBlank
     private String senha;
 
     @NotNull

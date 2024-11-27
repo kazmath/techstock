@@ -76,7 +76,9 @@ public class Usuario extends BaseModel {
         this.codigo = request.getCodigo();
         this.nome = request.getNome();
         this.email = request.getEmail();
-        this.senha = request.getSenha();
+        if (request.getSenha() != null && !request.getSenha().isEmpty()) {
+            this.senha = request.getSenha();
+        }
         this.usuarioTipo = request.getUsuarioTipo();
         this.setor = request.getSetor();
     }

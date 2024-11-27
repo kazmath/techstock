@@ -115,13 +115,6 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     String status, BindingResult result) {
         Response<Long> response = new Response<>();
 
-        if (status.length() != 1) {
-            response.getErrors().add("Código de status inválido");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-
-        }
-        char statusChar = status.charAt(0);
-
         Optional<Equipamento> equipamentoObj = equipamentoService.findById(id);
         if (!equipamentoObj.isPresent()) {
             response.getErrors()
@@ -137,7 +130,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
         EquipamentoStatus currStatus = null;
         for (EquipamentoStatus statusObj : EquipamentoStatus.values()) {
-            if (statusObj.getCodigo() == statusChar) {
+            if (statusObj.toString().equals(status)) {
                 currStatus = statusObj;
                 break;
             }
@@ -216,7 +209,7 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         EquipamentoStatus status = null;
 
         for (EquipamentoStatus currStatus : EquipamentoStatus.values()) {
-            if (currStatus.getCodigo() == request.statusId()) {
+            if (currStatus.toString() == request.statusId()) {
                 status = currStatus;
                 break;
             }

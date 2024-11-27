@@ -15,7 +15,7 @@ public class TicketEspelho implements IEspelho {
 
     private Long id;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dt_reserva;
 
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")

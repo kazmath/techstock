@@ -24,10 +24,8 @@ import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
 import br.com.techhub.techstock.controller.espelhos.TicketStatusEnumEspelho;
 import br.com.techhub.techstock.controller.filters.TicketFiltro;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
-import br.com.techhub.techstock.model.Equipamento;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
-import br.com.techhub.techstock.model.enums.EquipamentoStatus;
 import br.com.techhub.techstock.model.enums.TicketStatus;
 import br.com.techhub.techstock.security.TokenService;
 import br.com.techhub.techstock.service.TicketService;
@@ -144,13 +142,6 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     String status, BindingResult result) {
         Response<Long> response = new Response<>();
 
-        if (status.length() != 1) {
-            response.getErrors().add("Código de status inválido");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-
-        }
-        char statusChar = status.charAt(0);
-
         Optional<Ticket> ticketObj = ticketService.findById(id);
         if (!ticketObj.isPresent()) {
             response.getErrors()
@@ -163,7 +154,7 @@ public class TicketController implements IController<TicketEspelho, TicketReques
 
         TicketStatus currStatus = null;
         for (TicketStatus statusObj : TicketStatus.values()) {
-            if (statusObj.getCodigo() == statusChar) {
+            if (statusObj.toString().equals(status)) {
                 currStatus = statusObj;
                 break;
             }

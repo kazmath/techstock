@@ -1,16 +1,13 @@
 package br.com.techhub.techstock.model.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import lombok.Getter;
 
 @Getter
 public enum EquipamentoStatus {
-    INDISPONIVEL('I', "Indisponível", "#6AA554"),
-    DISPONIVEL('D', "Disponível", "#E6B128"),
-    EM_MANUTENCAO('M', "Em Manutenção", "#DF3F3F");
+    INDISPONIVEL('I', "Indisponível", "#df3f3f"),
+    DISPONIVEL('D', "Disponível", "#6aa554"),
+    EM_MANUTENCAO('M', "Em Manutenção", "#e6b128");
 
-    @JsonValue
     private char codigo;
 
     private String descricao;

@@ -45,7 +45,7 @@ public class TicketRepositoryImpl implements RFilter<Ticket, TicketFiltro> {
             if (!qlString.isBlank()) {
                 qlString += " and ";
             }
-            qlString += "t.status = :status";
+            qlString += "lower(t.status) = lower(:status)";
         }
 
         if (filter.getUsuarioId() != null) {

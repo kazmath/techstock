@@ -7,7 +7,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import br.com.techhub.techstock.model.Categoria;
 import br.com.techhub.techstock.model.Equipamento;
@@ -26,7 +25,8 @@ import br.com.techhub.techstock.service.SetorService;
 import br.com.techhub.techstock.service.TicketService;
 import br.com.techhub.techstock.service.UsuarioService;
 
-@Configuration
+// INFO: Descomentar isso tudo caso queira usar a carga de dados antiga
+// @Configuration
 public class LoadDatabase {
 
     @Autowired
