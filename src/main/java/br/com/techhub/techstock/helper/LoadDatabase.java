@@ -25,7 +25,7 @@ import br.com.techhub.techstock.service.SetorService;
 import br.com.techhub.techstock.service.TicketService;
 import br.com.techhub.techstock.service.UsuarioService;
 
-// INFO: Descomentar isso tudo caso queira usar a carga de dados antiga
+// INFO: Descomentar isso caso queira usar a carga de dados antiga
 // @Configuration
 public class LoadDatabase {
 
