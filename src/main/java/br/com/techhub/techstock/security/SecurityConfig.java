@@ -46,13 +46,17 @@ public class SecurityConfig {
                     SessionCreationPolicy.STATELESS
                 )
             )
+            .cors(
+                (cors) -> cors.configurationSource(corsConfigurationSource())
+
+            )
             .authorizeHttpRequests(
                 authorize -> authorize //
                     .requestMatchers(
                         HttpMethod.GET,
                         "/swagger-ui/**",
                         "/swagger-ui.html",
-                            "/api-docs/**"
+                        "/api-docs/**"
                     )
                     .access(
                         (a, o) -> new AuthorizationDecision(can_access_swagger)
@@ -103,17 +107,8 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration()
             .applyPermitDefaultValues();
-        configuration.setAllowedMethods(
-            Arrays.asList(
-                "POST",
-                "GET",
-                "PUT",
-                "DELETE",
-                "OPTIONS",
-                "PATCH",
-                "HEAD"
-            )
-        );
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
