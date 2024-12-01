@@ -12,6 +12,10 @@ import br.com.techhub.techstock.repository.TicketRepository;
 @Service
 public class TicketService extends BaseService<Ticket, TicketRepository> {
 
+    public Ticket save(Ticket entity) {
+        return repository.save(entity);
+    }
+
     public List<Ticket> findByUsuario(Long usuarioId) {
         return repository.findByUsuario(new Usuario(usuarioId));
     }

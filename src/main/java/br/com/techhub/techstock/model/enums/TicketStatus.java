@@ -7,7 +7,7 @@ public enum TicketStatus {
     RESERVADO('S', "Reservado", "#6AA554"),
     RECUSADO('N', "Recusado", "#DF3F3F"),
     AGUARDANDO('P', "Aguardando", "#E6B128"),
-    FINALIZADO('F', "Finalizado", "#666666");
+    DEVOLVIDO('F', "Devolvido", "#666666");
 
     private char codigo;
 

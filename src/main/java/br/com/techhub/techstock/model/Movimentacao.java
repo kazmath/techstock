@@ -1,7 +1,5 @@
 package br.com.techhub.techstock.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import br.com.techhub.techstock.controller.requests.MovimentacaoRequest;
@@ -17,8 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,20 +40,24 @@ public class Movimentacao extends BaseModel {
     @Column(length = 50, nullable = false)
     private MovimentacaoTipo tipo;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_movimentacao", nullable = false)
-    private Date data;
+    // @Temporal(TemporalType.TIMESTAMP)
+    // @Column(name = "dt_movimentacao", nullable = false)
+    // private Date data;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ticket", nullable = false)
+    @JoinColumn(name = "id_ticket", nullable = true)
     private Ticket ticket;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_equipamento", nullable = true)
+    private Equipamento equipamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario_adm", nullable = true)
     private Usuario usuarioAdm;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = true)
     private Usuario usuario;
 
     /**
@@ -75,9 +75,14 @@ public class Movimentacao extends BaseModel {
         super();
         this.id = request.getId();
         this.tipo = request.getTipo();
-        this.data = request.getData();
         this.ticket = request.getTicket();
         this.usuario = request.getUsuario();
     }
+
+    // public Equipamento getEquipamento() { // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException(
+    //         "Unimplemented method 'getEquipamento'"
+    //     );
+    // }
 
 }

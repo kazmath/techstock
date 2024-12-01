@@ -24,10 +24,14 @@ import br.com.techhub.techstock.controller.espelhos.TicketEspelho;
 import br.com.techhub.techstock.controller.espelhos.TicketStatusEnumEspelho;
 import br.com.techhub.techstock.controller.filters.TicketFiltro;
 import br.com.techhub.techstock.controller.requests.TicketRequest;
+import br.com.techhub.techstock.model.Movimentacao;
 import br.com.techhub.techstock.model.Ticket;
 import br.com.techhub.techstock.model.Usuario;
+import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import br.com.techhub.techstock.model.enums.TicketStatus;
+import br.com.techhub.techstock.model.enums.UsuarioTipo;
 import br.com.techhub.techstock.security.TokenService;
+import br.com.techhub.techstock.service.MovimentacaoService;
 import br.com.techhub.techstock.service.TicketService;
 import br.com.techhub.techstock.service.UsuarioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -39,6 +43,9 @@ import jakarta.validation.Valid;
 public class TicketController implements IController<TicketEspelho, TicketRequest, TicketFiltro> {
 
     @Autowired
+    private MovimentacaoService movimentacaoService;
+
+    @Autowired
     private TicketService ticketService;
 
     @Autowired
@@ -48,6 +55,27 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     private TokenService tokenService;
 
     @GetMapping
+    public ResponseEntity<Response<List<TicketEspelho>>> readAllWithHeaders(
+        @Valid
+        TicketFiltro filtro,
+        @RequestHeader
+        Map<String, String> headers
+    ) {
+        if (filtro.getUsuarioId() == null) {
+            var email = tokenService.validateToken(
+                headers.get("authorization")
+                    .toString()
+                    .substring("Bearer ".length())
+            );
+            Optional<Usuario> usuario = usuarioService.findByEmail(email);
+            if (usuario.isPresent() && usuario.get().getUsuarioTipo()
+                == UsuarioTipo.USER) {
+                filtro.setUsuarioId(usuario.get().getId());
+            }
+        }
+        return readAll(filtro);
+    }
+
     public ResponseEntity<Response<List<TicketEspelho>>> readAll(@Valid
     TicketFiltro filtro) {
         Response<List<TicketEspelho>> response = new Response<List<TicketEspelho>>();
@@ -95,6 +123,13 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         entity.setStatus(TicketStatus.AGUARDANDO);
 
         var obj = ticketService.save(new Ticket(entity));
+
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setTicket(obj);
+        movimentacao.setTipo(MovimentacaoTipo.SOLICITACAO);
+        movimentacao.setUsuario(obj.getUsuario());
+        movimentacaoService.save(movimentacao);
+
         response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -139,7 +174,8 @@ public class TicketController implements IController<TicketEspelho, TicketReques
     @PutMapping("/editar_status/{id}")
     public ResponseEntity<Response<Long>> updateStatus(@PathVariable
     Long id, @Valid @RequestBody
-    String status, BindingResult result) {
+    String status, BindingResult result, @RequestHeader
+    Map<String, String> headers) {
         Response<Long> response = new Response<>();
 
         Optional<Ticket> ticketObj = ticketService.findById(id);
@@ -166,7 +202,29 @@ public class TicketController implements IController<TicketEspelho, TicketReques
         }
         entity.setStatus(currStatus);
 
-        ticketService.save(entity);
+        var obj = ticketService.save(entity);
+
+
+        if (entity.getStatus() == TicketStatus.DEVOLVIDO || entity.getStatus()
+            == TicketStatus.RESERVADO) {
+            Movimentacao movimentacao = new Movimentacao();
+            movimentacao.setTicket(obj);
+            movimentacao.setUsuario(obj.getUsuario());
+            movimentacao.setTipo(
+                obj.getStatus() == TicketStatus.RESERVADO
+                    ? MovimentacaoTipo.SAIDA
+                    : MovimentacaoTipo.ENTRADA
+            );
+            var email = tokenService.validateToken(
+                headers.get("authorization")
+                    .toString()
+                    .substring("Bearer ".length())
+            );
+            Optional<Usuario> usuario = usuarioService.findByEmail(email);
+            movimentacao.setUsuarioAdm(usuario.get());
+            movimentacaoService.save(movimentacao);
+        }
+
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum MovimentacaoTipo {
     ENTRADA('E', "Entrada"),
     SAIDA('S', "Saida"),
-    TRANSFERENCIA('T', "Transferência");
+    TRANSFERENCIA('T', "Transferência"),
+    SOLICITACAO('N', "Solicitação");
 
     @JsonValue
     private char codigo;

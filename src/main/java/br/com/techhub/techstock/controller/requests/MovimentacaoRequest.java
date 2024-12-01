@@ -1,9 +1,6 @@
 
 package br.com.techhub.techstock.controller.requests;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,13 +24,13 @@ public class MovimentacaoRequest implements IRequest {
     @NotBlank
     private MovimentacaoTipo tipo;
 
-    @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date data;
-
-    @NotNull
+    // @NotNull
     @JsonProperty("ticketId")
     private Ticket ticket;
+
+    // @NotNull
+    @JsonProperty("equipamentoId")
+    private Ticket equipamento;
 
     @NotNull
     @JsonProperty("usuarioAdmId")

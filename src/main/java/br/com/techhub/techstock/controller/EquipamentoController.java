@@ -2,6 +2,7 @@ package br.com.techhub.techstock.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,8 +26,15 @@ import br.com.techhub.techstock.controller.filters.EquipamentoFiltro;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.controller.requests.EquipamentoStatusRequest;
 import br.com.techhub.techstock.model.Equipamento;
+import br.com.techhub.techstock.model.Movimentacao;
+import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
+import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
+import br.com.techhub.techstock.model.enums.UsuarioTipo;
+import br.com.techhub.techstock.security.TokenService;
 import br.com.techhub.techstock.service.EquipamentoService;
+import br.com.techhub.techstock.service.MovimentacaoService;
+import br.com.techhub.techstock.service.UsuarioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 
@@ -37,7 +46,36 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     @Autowired
     private EquipamentoService equipamentoService;
 
+    @Autowired
+    private MovimentacaoService movimentacaoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private TokenService tokenService;
+
     @GetMapping
+    public ResponseEntity<Response<List<EquipamentoEspelho>>> readAllWithHeaders(
+        EquipamentoFiltro filtro,
+        @RequestHeader
+        Map<String, String> headers
+
+    ) {
+        var email = tokenService.validateToken(
+            headers.get("authorization")
+                .toString()
+                .substring("Bearer ".length())
+        );
+        Optional<Usuario> usuario = usuarioService.findByEmail(email);
+        if (usuario.isPresent() && usuario.get().getUsuarioTipo()
+            == UsuarioTipo.USER) {
+            filtro.setStatus("DISPONIVEL");
+        }
+
+        return readAll(filtro);
+    }
+
     public ResponseEntity<Response<List<EquipamentoEspelho>>> readAll(
         EquipamentoFiltro filtro
     ) {
@@ -60,8 +98,13 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
     public ResponseEntity<Response<Long>> create(@Valid @RequestBody
     EquipamentoRequest entity, BindingResult result) {
         Response<Long> response = new Response<>();
-
         var obj = equipamentoService.save(new Equipamento(entity));
+
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setEquipamento(obj);
+        movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+        movimentacaoService.save(movimentacao);
+
         response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -142,7 +185,16 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         }
         entity.setStatus(currStatus);
 
-        equipamentoService.save(entity);
+        var obj = equipamentoService.save(entity);
+
+        if (obj.getStatus() == EquipamentoStatus.EM_MANUTENCAO || entity
+            .getStatus() == EquipamentoStatus.EM_MANUTENCAO) {
+            Movimentacao movimentacao = new Movimentacao();
+            movimentacao.setEquipamento(obj);
+            movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+            movimentacaoService.save(movimentacao);
+        }
+
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
@@ -153,7 +205,8 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         Response<Boolean> response = new Response<Boolean>();
         response.setData(false);
 
-        if (!equipamentoService.findById(id).isPresent()) {
+        Optional<Equipamento> obj = equipamentoService.findById(id);
+        if (!obj.isPresent()) {
             response.getErrors()
                 .add(
                     String.format(
@@ -164,7 +217,13 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
-        equipamentoService.delete(new Equipamento(id));
+        equipamentoService.delete(obj.get());
+
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setEquipamento(obj.get());
+        movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+        movimentacaoService.save(movimentacao);
+
         response.setData(true);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 

@@ -83,7 +83,9 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
             throw new ServiceException("Senha inválida");
         }
 
-        var obj = usuarioService.save(new Usuario(entity));
+        Usuario newEntity = new Usuario(entity);
+        newEntity.setSenha(entity.getSenha());
+        var obj = usuarioService.save(newEntity);
         response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -204,9 +206,10 @@ public class UsuarioController implements IController<UsuarioEspelho, UsuarioReq
         var email = usuario.get().getEmail();
         var codigo = usuario.get().getCodigo();
         var nome = usuario.get().getNome();
+        var id = usuario.get().getId();
 
         response.setData(
-            new AuthEspelho(token, nome, email, codigo, authorities)
+            new AuthEspelho(token, nome, email, codigo, authorities, id)
         );
         return ResponseEntity.ok(response);
     }

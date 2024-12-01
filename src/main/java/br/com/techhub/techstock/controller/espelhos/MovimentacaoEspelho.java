@@ -20,15 +20,27 @@ public class MovimentacaoEspelho implements IEspelho {
     private Date data;
 
     private Long ticketId;
+    private Long equipamentoId;
     private Long usuarioId;
     private Long usuarioAdmId;
 
     public MovimentacaoEspelho(Movimentacao movimentacao) {
         this.id = movimentacao.getId();
         this.tipo = movimentacao.getTipo();
-        this.data = movimentacao.getData();
-        this.ticketId = new TicketEspelho(movimentacao.getTicket(), false)
-            .getId();
+        this.data = movimentacao.getDtCreate();
+        if (movimentacao.getTicket() != null) {
+            TicketEspelho ticketEspelho = new TicketEspelho(
+                movimentacao.getTicket(),
+                false
+            );
+            this.ticketId = ticketEspelho.getId();
+            this.equipamentoId = ticketEspelho.getEquipamentoId();
+        }
+        if (movimentacao.getEquipamento() != null) {
+            this.equipamentoId = new EquipamentoEspelho(
+                movimentacao.getEquipamento()
+            ).getId();
+        }
         this.usuarioId = new UsuarioEspelho(movimentacao.getUsuario()).getId();
         if (movimentacao.getUsuarioAdm() != null) {
             this.usuarioAdmId = new UsuarioEspelho(movimentacao.getUsuarioAdm())
