@@ -1,6 +1,7 @@
 package br.com.techhub.techstock.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -182,6 +183,12 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         entity.setStatus(currStatus);
+
+        if (entity.getStatus() == EquipamentoStatus.DISPONIVEL) {
+            entity.setDt_saida(null);
+        } else {
+            entity.setDt_saida(new Date());
+        }
 
         var obj = equipamentoService.save(entity);
 
