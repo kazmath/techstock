@@ -16,7 +16,7 @@ public class MovimentacaoEspelho implements IEspelho {
     private Long             id;
     private MovimentacaoTipo tipo;
 
-    @JsonFormat(pattern = "dd/mm/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/mm/yyyy HH:mm", timezone = "GMT-3")
     private Date data;
 
     private Long ticketId;

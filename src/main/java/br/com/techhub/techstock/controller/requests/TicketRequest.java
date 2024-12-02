@@ -23,7 +23,7 @@ public class TicketRequest implements IRequest {
     private Long id;
 
     @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT-3")
     private Date dt_reserva;
 
     private String observacao;

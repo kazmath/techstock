@@ -26,10 +26,8 @@ import br.com.techhub.techstock.controller.filters.EquipamentoFiltro;
 import br.com.techhub.techstock.controller.requests.EquipamentoRequest;
 import br.com.techhub.techstock.controller.requests.EquipamentoStatusRequest;
 import br.com.techhub.techstock.model.Equipamento;
-import br.com.techhub.techstock.model.Movimentacao;
 import br.com.techhub.techstock.model.Usuario;
 import br.com.techhub.techstock.model.enums.EquipamentoStatus;
-import br.com.techhub.techstock.model.enums.MovimentacaoTipo;
 import br.com.techhub.techstock.model.enums.UsuarioTipo;
 import br.com.techhub.techstock.security.TokenService;
 import br.com.techhub.techstock.service.EquipamentoService;
@@ -100,10 +98,10 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
         Response<Long> response = new Response<>();
         var obj = equipamentoService.save(new Equipamento(entity));
 
-        Movimentacao movimentacao = new Movimentacao();
-        movimentacao.setEquipamento(obj);
-        movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
-        movimentacaoService.save(movimentacao);
+        // Movimentacao movimentacao = new Movimentacao();
+        // movimentacao.setEquipamento(obj);
+        // movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+        // movimentacaoService.save(movimentacao);
 
         response.setData(obj.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -187,13 +185,13 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
         var obj = equipamentoService.save(entity);
 
-        if (obj.getStatus() == EquipamentoStatus.EM_MANUTENCAO || entity
-            .getStatus() == EquipamentoStatus.EM_MANUTENCAO) {
-            Movimentacao movimentacao = new Movimentacao();
-            movimentacao.setEquipamento(obj);
-            movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
-            movimentacaoService.save(movimentacao);
-        }
+        // if (obj.getStatus() == EquipamentoStatus.EM_MANUTENCAO || entity
+        //     .getStatus() == EquipamentoStatus.EM_MANUTENCAO) {
+        //     Movimentacao movimentacao = new Movimentacao();
+        //     movimentacao.setEquipamento(obj);
+        //     movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+        //     movimentacaoService.save(movimentacao);
+        // }
 
         response.setData(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -219,10 +217,10 @@ public class EquipamentoController implements IController<EquipamentoEspelho, Eq
 
         equipamentoService.delete(obj.get());
 
-        Movimentacao movimentacao = new Movimentacao();
-        movimentacao.setEquipamento(obj.get());
-        movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
-        movimentacaoService.save(movimentacao);
+        // Movimentacao movimentacao = new Movimentacao();
+        // movimentacao.setEquipamento(obj.get());
+        // movimentacao.setTipo(MovimentacaoTipo.TRANSFERENCIA);
+        // movimentacaoService.save(movimentacao);
 
         response.setData(true);
         return ResponseEntity.status(HttpStatus.OK).body(response);

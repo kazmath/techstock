@@ -20,12 +20,12 @@ public class EquipamentoEspelho implements IEspelho {
     private String fabricante;
     private String modelo;
 
-    @JsonFormat(pattern = "yyyy")
+    @JsonFormat(pattern = "yyyy", timezone = "GMT-3")
     private Date anoFabricacao;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date dtSaida;
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date dtEntrada;
 
     private EquipamentoStatus status;

@@ -15,15 +15,15 @@ public class TicketEspelho implements IEspelho {
 
     private Long id;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy", timezone = "GMT-3")
     private Date dt_reserva;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "GMT-3")
     private Date dt_devolucao;
 
     private String observacao;
 
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "GMT-3")
     private Date dt_abertura;
 
     private TicketStatus status;

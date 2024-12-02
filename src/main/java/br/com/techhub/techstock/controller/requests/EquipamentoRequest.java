@@ -32,10 +32,10 @@ public class EquipamentoRequest implements IRequest {
     @NotBlank
     private String fabricante;
 
-    @JsonFormat(pattern = "yyyy")
+    @JsonFormat(pattern = "yyyy", timezone = "GMT-3")
     private Date ano_fabricacao;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT-3")
     private Date dt_saida;
 
     private String            descricao;

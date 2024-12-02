@@ -11,14 +11,22 @@ import lombok.Setter;
 public class TicketFiltro extends IFilter {
     private String query;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",
+        shape = Shape.STRING,
+        timezone = "GMT-3")
     private String dt_reserva_begin;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",
+        shape = Shape.STRING,
+        timezone = "GMT-3")
     private String dt_reserva_end;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",
+        shape = Shape.STRING,
+        timezone = "GMT-3")
     private String dt_devolucao_begin;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd",
+        shape = Shape.STRING,
+        timezone = "GMT-3")
     private String dt_devolucao_end;
 
     private String status;
