@@ -106114,7 +106114,7 @@ s=A.F(a).p2
 r=A.bf6("Rubik",s)
 A.bf6("Rubik",s).auP(r.y,r.z,r.Q,r.as,r.at,r.ax)
 q=A.St(null,B.Lf,null,!0)
-return new A.a0i(A.hk(),new A.aIb(),"Flutter Demo",q,B.abs,B.SY,B.Vo,!1,null)}}
+return new A.a0i(A.hk(),new A.aIb(),"Techstock",q,B.abs,B.SY,B.Vo,!1,null)}}
 A.aIb.prototype={
 $1(a){var s,r,q,p,o,n=t.Ts.a(a.b)
 for(s=A.bdZ(),r=a.a,q=0;q<6;++q){p=s[q]
@@ -107287,7 +107287,7 @@ case 1:return A.J(q,r)}})
 return A.K($async$$1,r)},
 $S:137}
 A.b53.prototype={
-$1(a){return J.h(a.h(0,"status"),"D")},
+$1(a){return J.h(a.h(0,"status"),"DISPONIVEL")},
 $S:16}
 A.b54.prototype={
 $1(a){return B.IU},
@@ -108257,11 +108257,11 @@ p=t.WY
 o=A.ec(8)
 n=t._o
 m=A.F(a).ax
-l=m.Q
+l=m.CW
 m=l==null?m.y:l
 l=t.O
 k=A.F(a).ax
-j=k.as
+j=k.cx
 k=j==null?k.z:j
 o=A.e3(e,e,e,new A.ae(m,l),e,e,e,e,new A.ae(k,l),e,e,e,e,e,e,new A.ae(c,p),e,new A.ae(new A.bY(o,B.D),n),e,e,e,e,e,e)
 f.a.toString

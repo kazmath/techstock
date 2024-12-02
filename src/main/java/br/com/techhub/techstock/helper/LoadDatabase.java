@@ -3,7 +3,6 @@ package br.com.techhub.techstock.helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import br.com.techhub.techstock.model.Setor;
 import br.com.techhub.techstock.model.Usuario;
@@ -16,7 +15,7 @@ import br.com.techhub.techstock.service.TicketService;
 import br.com.techhub.techstock.service.UsuarioService;
 
 // INFO: Descomentar isso caso queira usar a carga de dados antiga
-@Configuration
+// @Configuration
 public class LoadDatabase {
 
     @Autowired
