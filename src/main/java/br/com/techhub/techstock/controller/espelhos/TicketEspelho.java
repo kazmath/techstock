@@ -29,6 +29,7 @@ public class TicketEspelho implements IEspelho {
     private TicketStatus status;
     private Long         usuarioId;
     private Long         equipamentoId;
+    private Long         categoriaEquipId;
 
     public TicketEspelho(Ticket ticket) {
         this.id = ticket.getId();
@@ -37,8 +38,11 @@ public class TicketEspelho implements IEspelho {
         this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();
         this.usuarioId = new UsuarioEspelho(ticket.getUsuario()).getId();
-        this.equipamentoId = new EquipamentoEspelho(ticket.getEquipamento())
-            .getId();
+        EquipamentoEspelho equipamentoEspelho = new EquipamentoEspelho(
+            ticket.getEquipamento()
+        );
+        this.equipamentoId = equipamentoEspelho.getId();
+        this.categoriaEquipId = equipamentoEspelho.getCategoriaId();
     }
 
     public TicketEspelho(Ticket ticket, boolean includeUsuario) {
@@ -47,8 +51,11 @@ public class TicketEspelho implements IEspelho {
         this.observacao = ticket.getObservacao();
         this.dt_abertura = ticket.getDtCreate();
         this.status = ticket.getStatus();
-        this.equipamentoId = new EquipamentoEspelho(ticket.getEquipamento())
-            .getId();
+        EquipamentoEspelho equipamentoEspelho = new EquipamentoEspelho(
+            ticket.getEquipamento()
+        );
+        this.equipamentoId = equipamentoEspelho.getId();
+        this.categoriaEquipId = equipamentoEspelho.getCategoriaId();
         if (includeUsuario) {
             this.usuarioId = new UsuarioEspelho(ticket.getUsuario()).getId();
         }
